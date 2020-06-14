@@ -9,10 +9,12 @@
 % Designed for Bordelon et al manuscript examining mechanical energy
 % flow through the kinetic chain during softball hitting
 %
-% Required in directory: 
-%   1) exported files (.exp or .txt) 
-%   2) extractData.m
-%   3) grabFirstRow.m
+% Required functions: 
+%   1) extractData.m
+%   2) grabFirstRow.m
+%
+% Downloads required functions from GitHub repository
+%
 %
 % FirstRowExtract does NOT have to be in directory
 % Author: Kyle Wasserberger
@@ -80,9 +82,14 @@ else
         
         saveAveFile = join(strAveMaster,'/');
         
-        %% Compile the first row of data from individual exports
-        % Arguments: fileNames, numFiles, numTrials, saveFile, saveAveFile
+        %% Load required functions from online respository
+        websave('extractData.m',...
+            'https://raw.githubusercontent.com/kww-22/matlab/master/extractData.m');
+        websave('grabFirstRow.m',...
+            'https://raw.githubusercontent.com/kww-22/matlab/master/grabFirstRow.m');
         
+        %% Compile the first row of data from individual exports
+        % Arguments: fileNames, numFiles, numTrials, saveFile, saveAveFile 
         grabFirstRow(fileNames,numFiles,numTrials,VarRow,saveFile,saveAveFile);
         
 
