@@ -15,10 +15,11 @@
 %
 % Downloads required functions from GitHub repository
 %
-%
-% FirstRowExtract does NOT have to be in directory
 % Author: Kyle Wasserberger
-% Last Updated: 2020-06-12
+% Sports Medicine and Movement Lab
+% School of Kinesiology; Auburn University
+% Auburn, AL, USA
+% Last Updated: 2020-06-14
 % *************************************************************************
 %% Gather directory information
 
@@ -72,6 +73,7 @@ else
             clc
             disp('ERROR: You hit cancel instead of entering a file name');
     else      
+    %% Create character strings for saved output files
         avefile = ['ave' file];
         avefile = join(avefile,'');
         
@@ -82,16 +84,15 @@ else
         
         saveAveFile = join(strAveMaster,'/');
         
-        %% Load required functions from online respository
+     %% Load required functions from online respository
         websave('extractData.m',...
             'https://raw.githubusercontent.com/kww-22/matlab/master/extractData.m');
         websave('grabFirstRow.m',...
             'https://raw.githubusercontent.com/kww-22/matlab/master/grabFirstRow.m');
         
-        %% Compile the first row of data from individual exports
-        % Arguments: fileNames, numFiles, numTrials, saveFile, saveAveFile 
+     %% Compile the first row of data from individual exports
+      % Arguments: fileNames, numFiles, numTrials, saveFile, saveAveFile 
         grabFirstRow(fileNames,numFiles,numTrials,VarRow,saveFile,saveAveFile);
         
-
     end
 end

@@ -1,10 +1,23 @@
 function [firstRowMaster,aveFirstRowMaster] = grabFirstRow(fileNames,numFiles,numTrials,VarRow,saveFile,saveAveFile)
-%grabRow1 Extract first data row from MotionMonitor .exp files
+% grabFirstRow: Extract first data row from MotionMonitor .exp files
 % *************************************************************************
 % Grabs first row of data from MotionMonitor .exp exports
 % and compile them into a master data table
 %
-% Saves 'firstRowMaster.csv' and 'aveFirstRowMaster.csv' to specified directory
+% Inputs (provided by firstRowExtract.m):
+%   fileNames: table of file names in directory
+%   numFiles: total number of files in directory
+%   numTrials: number of trials per participant
+%   VarRow: table row with variable names
+%   saveFile: file path for saved master table
+%   saveAveFile: file path for save average master table
+%
+% Outputs:
+%   firstRowMaster: compiled master table of each trial
+%   aveFirstRowMaster: compiled mater table of averages within each
+%   participant
+%
+% Saves '*.csv' and 'ave*.csv' to specified directory
 % 
 % Designed for Bordelon et al manuscript examining mechanical energy
 % flow through the kinetic chain during softball hitting
@@ -12,8 +25,12 @@ function [firstRowMaster,aveFirstRowMaster] = grabFirstRow(fileNames,numFiles,nu
 % Requires in directory: 
 %   1) exported files 
 %   2) extractData.m
+% 
 % Author: Kyle Wasserberger
-% Last Updated: 2020-06-12
+% Sports Medicine and Movement Lab
+% School of Kinesiology; Auburn University
+% Auburn, AL, USA
+% Last Updated: 2020-06-14
 % *************************************************************************
 %% Get file dimensions from first file in directory to create master table
 
