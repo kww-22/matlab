@@ -1,4 +1,4 @@
-%% FirstRowExtract.m
+%% firstRowExtract.m
 % *************************************************************************
 % Interactive script to grab the first row of data from MotionMonitor
 % Classic .exp exports and compile them into a master data table
@@ -9,7 +9,7 @@
 % Designed for Bordelon et al manuscript examining mechanical energy
 % flow through the kinetic chain during softball hitting
 %
-% Required functions: 
+% Functions called: 
 %   1) extractData.m
 %   2) grabFirstRow.m
 %
@@ -41,19 +41,20 @@ fileNames = cell2table(fileNames);
 numFiles = height(fileNames);
 
 
-%% Imput trial parameters
-
+%% Interactive prompt to collect trial parameters
 prompt = {'How many trials per participant?',...
+          'How many events?'...
           'Which row contains the variable names?',...
-          'What should your output file be called? (Include .csv extension)'};
+          'Output file name? (Include extension; .csv or .xls recommended)'};
 dlgtitle = 'Define trial parameters';
-dims = [1 35];
-defParams = {'3','9','fileName.ext'};
+dims = [1 45];
+defParams = {'3','4','9','fileName.csv'};
 trialParams = inputdlg(prompt,dlgtitle,dims,defParams);
 
 numTrials = str2double(trialParams{1});
-VarRow = str2double(trialParams{2});
-file = trialParams(3);
+numEvents = str2double(trialParams{2});
+VarRow = str2double(trialParams{3});
+file = trialParams(4);
 
 %% Error Trapping
 
@@ -92,7 +93,9 @@ else
         
      %% Compile the first row of data from individual exports
       % Arguments: fileNames, numFiles, numTrials, saveFile, saveAveFile 
-        grabFirstRow(fileNames,numFiles,numTrials,VarRow,saveFile,saveAveFile);
+        [firstRowMaster, aveFirstRowMaster] = grabFirstRow(fileNames,numFiles,numTrials,VarRow,saveFile,saveAveFile);
         
     end
+delete extractData.m
+delete grabFirstRow.m
 end
