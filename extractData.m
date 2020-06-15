@@ -1,4 +1,4 @@
-function [data] = extractData(file,fileType,VarRow)
+function [data] = extractData(file,fileType,varRow)
 % extractData: Extracts data from MotionMonitor .exp file and saves it to the
 % workspace
 % *************************************************************************
@@ -19,7 +19,7 @@ function [data] = extractData(file,fileType,VarRow)
 opts = detectImportOptions(file,'FileType',fileType);
 
 % Variable names are located in VarRow
-opts.VariableNamesLine = VarRow;
+opts.VariableNamesLine = varRow;
 
 % Preserve variable names as is
 opts.PreserveVariableNames = true;
@@ -28,7 +28,7 @@ opts.PreserveVariableNames = true;
 opts.ExtraColumnsRule = 'ignore';
 
 % Data lines start 1 after VarRow
-opts.DataLines = [VarRow+1 inf];
+opts.DataLines = [varRow+1 inf];
 
 %%Read in file to variable 'data'
 data = readtable(file,opts);
