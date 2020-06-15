@@ -78,7 +78,7 @@ aveMinMaster.Properties.VariableNames = minMaster.Properties.VariableNames;
 %% Save master and avemaster
 
 % Save hand and no hand files with different file names
-maxFile = [path 'minMaster.csv'];
+maxFile = [path "minMaster.csv"];
 aveMaxFile = [path "aveMinMaster.csv"];
 
 saveFile = join(maxFile,'/');
