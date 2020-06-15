@@ -1,4 +1,4 @@
-function [maxMaster,aveMaxMaster] = maxFinder(fileNames,numFiles,numTrials,varRow)
+function [maxMaster,aveMaxMaster] = maxFinder(path,fileNames,numFiles,numTrials,varRow)
 % maxFinder: find maximaum values between first and last event
 % *************************************************************************
 % Excracts maximum data values from MotionMonitor .exp exports
