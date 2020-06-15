@@ -1,4 +1,4 @@
-function [minMaster,aveMinMaster] = minFinder(path,fileNames,numFiles,numTrials,varRow)
+function [minMaster,aveMinMaster] = minFinder(fileNames,numFiles,numTrials,varRow,saveFile,saveAveFile)
 % minFinder: find maximaum values between first and last event
 % *************************************************************************
 % Excracts maximum data values from MotionMonitor .exp exports
@@ -75,14 +75,7 @@ end
 aveMinMaster = addvars(aveMinMaster,files(1:numTrials:length(files)),'before',1);
 aveMinMaster.Properties.VariableNames = minMaster.Properties.VariableNames;
 
-%% Save master and avemaster
-
-% Save hand and no hand files with different file names
-maxFile = [path "minMaster.csv"];
-aveMaxFile = [path "aveMinMaster.csv"];
-
-saveFile = join(maxFile,'/');
-saveAveFile = join(aveMaxFile,'/');
+%% Save minMaster and aveMinMaster
 
 writetable(minMaster,saveFile{:});
 writetable(aveMinMaster,saveAveFile{:});

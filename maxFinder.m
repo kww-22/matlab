@@ -1,4 +1,4 @@
-function [maxMaster,aveMaxMaster] = maxFinder(path,fileNames,numFiles,numTrials,varRow)
+function [maxMaster,aveMaxMaster] = maxFinder(fileNames,numFiles,numTrials,varRow,saveFile,saveAveFile)
 % maxFinder: find maximaum values between first and last event
 % *************************************************************************
 % Excracts maximum data values from MotionMonitor .exp exports
@@ -75,14 +75,7 @@ end
 aveMaxMaster = addvars(aveMaxMaster,files(1:numTrials:length(files)),'before',1);
 aveMaxMaster.Properties.VariableNames = maxMaster.Properties.VariableNames;
 
-%% Save master and avemaster
-
-% Save hand and no hand files with different file names
-maxFile = [path "maxFinder.csv"];
-aveMaxFile = [path "aveMaxFinder.csv"];
-
-saveFile = join(maxFile,'/');
-saveAveFile = join(aveMaxFile,'/');
+%% Save maxMaster and aveMaxMaster
 
 writetable(maxMaster,saveFile{:});
 writetable(aveMaxMaster,saveAveFile{:});
