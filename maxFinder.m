@@ -78,11 +78,11 @@ aveMaxMaster.Properties.VariableNames = maxMaster.Properties.VariableNames;
 %% Save master and avemaster
 
 % Save hand and no hand files with different file names
-file = [path "maxFinder.csv"];
-aveFile = [path "aveMaxFinder.csv"];
+maxFile = [path "maxFinder.csv"];
+aveMaxFile = [path "aveMaxFinder.csv"];
 
-saveFile = join(file,'/');
-saveAveFile = join(aveFile,'/');
+saveFile = join(maxFile,'/');
+saveAveFile = join(aveMaxFile,'/');
 
 writetable(maxMaster,saveFile{:});
 writetable(aveMaxMaster,saveAveFile{:});
