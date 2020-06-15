@@ -46,10 +46,14 @@ for i = 1:numFiles
     minData = NaN(1,numVars);
     
     trialRange = find(data.VEM_0 == 1);
-    trialData = data(trialRange(1):trialRange(end),:);
-    minData = min(trialData{:,:});
-
-    minMaster{i,:} = minData;
+    if length(trialRange) ~= numEvents
+        disp('A trial does not have the correct number of event marks');
+        disp('You may see which trials by checking maxMaster in the workspace')
+    else
+        trialData = data(trialRange(1):trialRange(end),:);
+        minData = min(trialData{:,:});
+        minMaster{i,:} = minData;
+    end
 end
 %% Append sorted file names to beginning of table
 

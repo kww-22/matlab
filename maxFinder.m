@@ -1,4 +1,4 @@
-function [maxMaster,aveMaxMaster] = maxFinder(fileNames,numFiles,numTrials,varRow,saveFile,saveAveFile)
+function [maxMaster,aveMaxMaster] = maxFinder(fileNames,numFiles,numTrials,numEvents,varRow,saveFile,saveAveFile)
 % maxFinder: find maximaum values between first and last event
 % *************************************************************************
 % Excracts maximum data values from MotionMonitor .exp exports
@@ -46,10 +46,14 @@ for i = 1:numFiles
     maxData = NaN(1,numVars);
     
     trialRange = find(data.VEM_0 == 1);
-    trialData = data(trialRange(1):trialRange(end),:);
-    maxData = max(trialData{:,:});
-
-    maxMaster{i,:} = maxData;
+    if length(trialRange) ~= numEvents
+        disp('A trial does not have the correct number of event marks');
+        disp('You may see which trials by checking maxMaster in the workspace')
+    else
+        trialData = data(trialRange(1):trialRange(end),:);
+        maxData = max(trialData{:,:});
+        maxMaster{i,:} = maxData;
+    end
 end
 %% Append sorted file names to beginning of table
 
