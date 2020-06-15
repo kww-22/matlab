@@ -48,7 +48,7 @@ for i = 1:numFiles
     trialRange = find(data.VEM_0 == 1);
     if length(trialRange) ~= numEvents
         disp('A trial does not have the correct number of event marks');
-        disp('You may see which trials by checking maxMaster in the workspace')
+        disp('You may see which trials by checking minMaster in the workspace')
     else
         trialData = data(trialRange(1):trialRange(end),:);
         minData = min(trialData{:,:});
