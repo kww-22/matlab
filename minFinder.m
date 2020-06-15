@@ -1,4 +1,4 @@
-function [minMaster,aveMinMaster] = minFinder(fileNames,numFiles,numTrials,varRow,saveFile,saveAveFile)
+function [minMaster,aveMinMaster] = minFinder(fileNames,numFiles,numTrials,numEvents,varRow,saveFile,saveAveFile)
 % minFinder: find maximaum values between first and last event
 % *************************************************************************
 % Excracts maximum data values from MotionMonitor .exp exports
