@@ -2,7 +2,7 @@
 
 % Set directory
 % Choose folder path containing exported and necessary matlab files
-path = uigetdir();
+path = uigetdir('Navigate to the folder containing MotionMonitor Exports');
 cd(path);
 
 % Isolate files with .exp extension
