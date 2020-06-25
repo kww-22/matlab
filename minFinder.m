@@ -1,29 +1,29 @@
-function [minMaster,aveMinMaster] = minFinder(fileNames,numFiles,numTrials,numEvents,varRow,saveFile,saveAveFile)
+function [minMaster,aveMinMaster] = minFinder(fileNames,numFiles,...
+    numTrials,numEvents,varRow,saveFile,saveAveFile)
 % minFinder: find maximaum values between first and last event
 % *************************************************************************
-% Excracts maximum data values from MotionMonitor .exp exports
+% Extracts minimum data values from MotionMonitor .exp exports
 % and compiles them into a master data table
 %
-% saves 'minMaster.csv' & 'aveMinMaster.csv' to selected directory
-%
-% Inputs: 
+% Inputs (all provided by smml_gui): 
 %   fileNames: list of text files in current directory
 %   numFiles: total number of text files in current directory
 %   numTrials: number of trials per participant
+%   numEvents: number of events in each trial
 %   VarRow: row containing variable names
-%
+%   saveFile: name of master csv file
+%   saveAveFile: name of ave master csv file
+% 
 % Outputs:
-%
-%
-% Requires in directory: 
-%   1) exported files 
-%   2) extractData.m
+%   minMaster.csv: table containing event data from each individual trial
+%   aveMinMaster.csv: table containing averaged event data across all
+%   trials within each participan
 % 
 % Author: Kyle Wasserberger
 % Sports Medicine and Movement Lab
 % School of Kinesiology; Auburn University
 % Auburn, AL, USA
-% Last Updated: 2020-06-14
+% Last Updated: 2020-06-25
 % *************************************************************************
 %% Get file dimensions from first file in directory to create master table
 
@@ -79,7 +79,7 @@ end
 aveMinMaster = addvars(aveMinMaster,files(1:numTrials:length(files)),'before',1);
 aveMinMaster.Properties.VariableNames = minMaster.Properties.VariableNames;
 
-%% Save minMaster and aveMinMaster
+%% Save minMaster and aveMinMaster with provided file names
 
 writetable(minMaster,saveFile{:});
 writetable(aveMinMaster,saveAveFile{:});

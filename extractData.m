@@ -1,6 +1,6 @@
 function [data] = extractData(file,fileType,varRow)
-% extractData: Extracts data from MotionMonitor .exp file and saves it to the
-% workspace
+% extractData: Extracts data from MotionMonitor .exp file and saves it to 
+% the workspace
 % *************************************************************************
 % Inputs:
 %   file: file name encased in "*"
@@ -15,6 +15,7 @@ function [data] = extractData(file,fileType,varRow)
 % School of Kinesiology; Auburn University
 % Auburn, AL, USA
 % Last Updated: 2020-06-14
+% *************************************************************************
 %% Get and set file characteristics
 opts = detectImportOptions(file,'FileType',fileType);
 

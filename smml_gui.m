@@ -1,3 +1,29 @@
+% smml_gui: interactive script to handle basic data cleaning/organizing
+% from MotionMonitor
+% *************************************************************************
+% Gives user a series of interactive prompts to select which data
+% cleaning/organizing processes they would like. Options include:
+%       1. Max of variables btwn first & last event
+%       2. Min of variables btwn first & last event
+%       3. Values of variables @ events
+%       4. Average value of variables between events (over phases) (in
+%       progress)
+%
+% User may also provide custom event labels and custom outpus file names
+% 
+% Inputs:
+%   NA
+%
+% Outputs:
+%   depending on which processes user selects saves various .csv master and 
+%   average master files to selected directory
+%
+% Author: Kyle Wasserberger
+% Sports Medicine and Movement Lab
+% School of Kinesiology; Auburn University
+% Auburn, AL, USA
+% Last Updated: 2020-06-25
+% *************************************************************************
 %% Gather directory information
 
 % Set directory
@@ -204,9 +230,6 @@ if valEvent == 1
         if eventStop == 0
             error('event abbreviations were not defined');
         end
-    % download eventFinder from online repository
-    % websave(...);
-    % run eventFinder.m
 end
 
 %% Run eventFinder if selected

@@ -1,32 +1,33 @@
-function [eventMaster,aveEventMaster] = eventFinder(fileNames,numFiles,numTrials,numEvents,varRow,eventParams,eventSort,saveFile,saveAveFile)
-% maxFinder: find maximaum values between first and last event
+function [eventMaster,aveEventMaster] = eventFinder(fileNames,numFiles,...
+    numTrials,numEvents,varRow,eventParams,eventSort,saveFile,saveAveFile)
+% eventFinder: find values at events
 % *************************************************************************
 % Excracts event data from MotionMonitor .exp exports
 % and compiles them into a master data table
 %
-% saves 'evetMaster.csv' & 'aveEventMaster.csv' to selected directory
+% saves 'eventMaster.csv' & 'aveEventMaster.csv' to selected directory
 %
-% Inputs: 
+% Inputs (all provided by smml_gui.m): 
 %   fileNames: list of text files in current directory
 %   numFiles: total number of text files in current directory
 %   numTrials: number of trials per participant
 %   numEvents: number of events in trial
 %   VarRow: row containing variable names
+%   eventParams: event abbreviations
+%   eventSort: logical to determine how output files are sorted
 %   saveFile: name of master csv file
 %   saveAveFile: name of ave master csv file
 %
 % Outputs:
-% 
-%
-% Requires in directory: 
-%   1) exported files 
-%   2) extractData.m
+%   eventMaster.csv: table containing event data from each individual trial
+%   aveEventMaster.csv: table containing averaged event data across all
+%   trials within each participant
 % 
 % Author: Kyle Wasserberger
 % Sports Medicine and Movement Lab
 % School of Kinesiology; Auburn University
 % Auburn, AL, USA
-% Last Updated: 2020-06-15
+% Last Updated: 2020-06-25
 % *************************************************************************
 %% Get file dimensions from first file in directory to create master table
 
