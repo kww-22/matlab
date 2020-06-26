@@ -30,7 +30,7 @@ function [firstRowMaster,aveFirstRowMaster] = grabFirstRow(fileNames,numFiles,nu
 % Sports Medicine and Movement Lab
 % School of Kinesiology; Auburn University
 % Auburn, AL, USA
-% Last Updated: 2020-06-14
+% Last Updated: 2020-06-25
 % *************************************************************************
 %% Get file dimensions from first file in directory to create master table
 
