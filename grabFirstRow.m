@@ -58,7 +58,7 @@ end
 files = sort(fileNames.fileNames);
 firstRowMaster = addvars(firstRowMaster,files,'before',1);
 
-%% Create average values across three trials
+%% Create average values across n trials
 
 % Create vector that goes from 1 to numFiles every x
 pStartRow = 1:numTrials:numFiles;
@@ -74,8 +74,8 @@ for i = 1:numPeeps
     aveFirstRowMaster{i,2:end} = mean(firstRowMaster{pStartRow(i):pStartRow(i)+numTrials-1,3:end},1);
 end
 
-% Add every third trial name to the beginning of avemaster
-aveFirstRowMaster = addvars(aveFirstRowMaster,files(1:3:length(files)),'before',1);
+% Add every nth trial name to the beginning of avemaster
+aveFirstRowMaster = addvars(aveFirstRowMaster,files(1:numTrials:length(files)),'before',1);
 
 %% Save master and avemaster
 
