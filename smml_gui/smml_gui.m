@@ -237,9 +237,9 @@ end
 if valEvent == 1
     % download maxFinder from online repository
      websave('extractData.m',...
-             'https://raw.githubusercontent.com/kww-22/matlab/master/extractData.m');
+             'https://raw.githubusercontent.com/kww-22/matlab/master/smml_gui/extractData.m');
      websave('eventFinder.m',...
-         'https://raw.githubusercontent.com/kww-22/matlab/master/eventFinder.m');
+         'https://raw.githubusercontent.com/kww-22/matlab/master/smml_gui/eventFinder.m');
 
 % Create character strings for saved output files
     avefile = ['ave' outputParams(1)];
@@ -273,9 +273,9 @@ end
 if valMax == 1
     % download extractData and maxFinder from online repository
     websave('extractData.m',...
-            'https://raw.githubusercontent.com/kww-22/matlab/master/extractData.m');
+            'https://raw.githubusercontent.com/kww-22/matlab/master/smml_gui/extractData.m');
     websave('maxFinder.m',...
-        'https://raw.githubusercontent.com/kww-22/matlab/master/maxFinder.m');
+        'https://raw.githubusercontent.com/kww-22/matlab/master/smml_gui/maxFinder.m');
     
     % Create character strings for saved output files
     avefile = ['ave' outputParams(2)];
@@ -302,9 +302,9 @@ end
 if valMin == 1
     % download extractData and minFinder from online repository
     websave('extractData.m',...
-            'https://raw.githubusercontent.com/kww-22/matlab/master/extractData.m');
+            'https://raw.githubusercontent.com/kww-22/matlab/master/smml_gui/extractData.m');
     websave('minFinder.m',...
-        'https://raw.githubusercontent.com/kww-22/matlab/master/minFinder.m');
+        'https://raw.githubusercontent.com/kww-22/matlab/master/smml_gui/minFinder.m');
     
     % Create character strings for saved output files
     avefile = ['ave' outputParams(3)];
