@@ -1,4 +1,4 @@
-%% Energy generation absorption & transfer @ the shoulder  & elbow
+%% Energy generation, absorption, & transfer @ the shoulder & elbow
 % *************************************************************************
 % Script to parse energy flow between the thorax, humerus, and forearm into
 % energy transfer, generation, and absorption as outlined in Robinson &
@@ -6,13 +6,18 @@
 % Amongst Segments Druing Walking
 %
 % Writes results to .csv table in selected directory
-%
-% Original Author: Anne de Swart
-% Adapted by: Kyle Wasserberger
-% Sports Medicine and Movement Lab
-% School of Kinesiology; Auburn University
-% Auburn, AL, USA
-% Last Updated: 2020-06-26
+% 
+% Contributors:
+%   Original Author: Anne de Swart
+%       Human Movement Sciences
+%       Vrije Universiteit 
+%       Amsterdam, Netherlands
+%   Adapted & Revised: Kyle Wasserberger
+%       Sports Medicine and Movement Lab
+%       School of Kinesiology
+%       Auburn University
+%       Alabama, USA
+% Last Updated: 2020-06-28
 % *************************************************************************
 %% Close all previous windows
 
