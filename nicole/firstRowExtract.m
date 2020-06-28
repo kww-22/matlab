@@ -89,7 +89,7 @@ else
         websave('extractData.m',...
             'https://raw.githubusercontent.com/kww-22/matlab/master/extractData.m');
         websave('grabFirstRow.m',...
-            'https://raw.githubusercontent.com/kww-22/matlab/master/grabFirstRow.m');
+            'https://raw.githubusercontent.com/kww-22/matlab/master/nicole/grabFirstRow.m');
         
      %% Compile the first row of data from individual exports
       % Arguments: fileNames, numFiles, numTrials, saveFile, saveAveFile 
