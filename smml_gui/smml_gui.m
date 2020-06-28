@@ -22,7 +22,7 @@
 % Sports Medicine and Movement Lab
 % School of Kinesiology; Auburn University
 % Auburn, AL, USA
-% Last Updated: 2020-06-25
+% Last Updated: 2020-06-28
 % *************************************************************************
 %% Gather directory information
 
