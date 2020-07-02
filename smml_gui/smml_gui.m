@@ -237,7 +237,7 @@ end
 if valEvent == 1
     % download maxFinder from online repository
      websave('extractData.m',...
-             'https://raw.githubusercontent.com/kww-22/matlab/master/smml_gui/extractData.m');
+             'https://raw.githubusercontent.com/kww-22/matlab/master/extractData.m');
      websave('eventFinder.m',...
          'https://raw.githubusercontent.com/kww-22/matlab/master/smml_gui/eventFinder.m');
 
@@ -273,7 +273,7 @@ end
 if valMax == 1
     % download extractData and maxFinder from online repository
     websave('extractData.m',...
-            'https://raw.githubusercontent.com/kww-22/matlab/master/smml_gui/extractData.m');
+            'https://raw.githubusercontent.com/kww-22/matlab/master/extractData.m');
     websave('maxFinder.m',...
         'https://raw.githubusercontent.com/kww-22/matlab/master/smml_gui/maxFinder.m');
     
@@ -302,7 +302,7 @@ end
 if valMin == 1
     % download extractData and minFinder from online repository
     websave('extractData.m',...
-            'https://raw.githubusercontent.com/kww-22/matlab/master/smml_gui/extractData.m');
+            'https://raw.githubusercontent.com/kww-22/matlab/master/extractData.m');
     websave('minFinder.m',...
         'https://raw.githubusercontent.com/kww-22/matlab/master/smml_gui/minFinder.m');
     
@@ -326,5 +326,6 @@ if valMin == 1
     delete extractData.m
 end
 
-%% Display when complete   
+%% Display when complete  
+clc
 disp('the script finished')
