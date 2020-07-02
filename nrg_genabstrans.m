@@ -8,11 +8,11 @@
 % Writes results to .csv table in selected directory
 % 
 % Contributors:
-%   Original Author: Anne de Swart
+%   Anne de Swart
 %       Human Movement Sciences
 %       Vrije Universiteit 
 %       Amsterdam, Netherlands
-%   Adapted & Revised: Kyle Wasserberger
+%   Kyle Wasserberger
 %       Sports Medicine and Movement Lab
 %       School of Kinesiology
 %       Auburn University
