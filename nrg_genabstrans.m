@@ -357,6 +357,26 @@ xline(mean(mer_master)*100);
 xline(mean(br_master)*100);
 yline(0);
 
+%% Plot net transfer @ shoulder & elbow
+
+figure('color','w');
+subplot(2,1,1)
+plot(shldr_trans_net);
+title('Net Shoulder Transfer');
+%xlabel('Time (%SFC-MIR)');
+ylabel('Joint Power (W)');
+xline(mean(mer_master)*100);
+xline(mean(br_master)*100);
+yline(0);
+subplot(2,1,2)
+plot(elb_trans_net);
+title('Net Elbow Transfer');
+xlabel('Time (%SFC-MIR)');
+ylabel('Joint Power (W)');
+xline(mean(mer_master)*100);
+xline(mean(br_master)*100);
+yline(0);
+
 %% Write results to table
 participants = fileNames.fileNames;
 genabstrans_master = table();
