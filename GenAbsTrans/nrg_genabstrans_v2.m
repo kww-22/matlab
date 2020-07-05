@@ -6,6 +6,8 @@
 % Amongst Segments Druing Walking
 %
 % Writes results to .csv table in selected directory
+%
+% Version 2.0 - integrates interpolated instead of raw power curves
 % 
 % Contributors:
 %   Anne de Swart
