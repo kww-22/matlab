@@ -1,5 +1,5 @@
 function [phaseMaster,avePhaseMaster] = phaseFinder(fileNames,numFiles,...
-    numTrials,varRow,phaseSort,saveFile,saveAveFile)
+    numTrials,numEvents,varRow,phaseSort,saveFile,saveAveFile)
 % phaseFinder: find average values across phases
 % *************************************************************************
 % Excracts phase data from MotionMonitor .exp exports

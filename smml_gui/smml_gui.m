@@ -543,7 +543,7 @@ if valPhase == 1
     
     % Run phaseFinder.m
     [phaseMaster, avePhaseMaster] = phaseFinder(fileNames,numFiles,...
-    numTrials,varRow,phaseSort,saveFile,saveAveFile);
+    numTrials,numEvents,varRow,phaseSort,saveFile,saveAveFile);
     
     % Remove downloaded files from selected directory
     delete phaseFinder.m
