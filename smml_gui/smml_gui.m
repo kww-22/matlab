@@ -9,7 +9,7 @@
 %       4. Average value of variables between events (over phases) (in
 %       progress)
 %
-% User may also provide custom event labels and custom outpus file names
+% User may also provide custom event labels and custom output file names
 % 
 % Inputs:
 %   NA
@@ -83,112 +83,261 @@ valMin = listdlg('PromptString', 'Min of variables between first and last event?
     'Name', 'Values at Events', ...
     'ListSize', [225 100]);
 
+%% Phases?
+
+% Builds yes/no selection box. Yes: valPhase = 1; No: valPhase = 2
+valPhase = listdlg('PromptString', 'Average of variables between events?', ...
+    'SelectionMode', 'single', ...
+    'ListString',{'Yes', 'No'}, ...
+    'Name', 'Values at Events', ...
+    'ListSize', [225 100]);
+
 %% Provide output file names
 
-% Events, maxes, and mins
-if valEvent == 1 && valMax == 1 && valMin == 1
+% 1. Events, maxes, mins, & phases
+if valEvent == 1 && valMax == 1 && valMin == 1 && valPhase == 1
     prompt = {'Events file name?',...
-        'Maxes file name?'...
-        'Mins file name?'};
+        'Maxes file name?',...
+        'Mins file name?',...
+        'Phases file name'};
     dlgtitle = 'Provide output file names (Inlcude extension; .csv or .xls recommended)';
     dims = [1 45];
-    defParams = {'eventMaster.csv','maxMaster.csv','minMaster.csv'};
+    defParams = {'eventMaster.csv','maxMaster.csv','minMaster.csv','phaseMaster.csv'};
     outputParams = inputdlg(prompt,dlgtitle,dims,defParams);
     
     eventOutFile = outputParams(1);
     maxOutFile = outputParams(2);
     minOutFile = outputParams(3);
-
-% Events and Maxes
-elseif valEvent == 1 && valMax == 1 && valMin == 2
+    phaseOutFile = outputParams(4);
+    
+ % 2. Events, maxes, and mins
+elseif valEvent == 1 && valMax == 1 && valMin == 1 && valPhase == 2
     prompt = {'Events file name?',...
-        'Maxes file name?'...
-        'Mins file name?'};
+        'Maxes file name?',...
+        'Mins file name?',...
+        'Phases file name?'};
     dlgtitle = 'Provide output file names (Inlcude extension; .csv or .xls recommended)';
     dims = [1 45];
-    defParams = {'eventMaster.csv','maxMaster.csv','NA (leave alone)'};
+    defParams = {'eventMaster.csv','maxMaster.csv','minMaster.csv','NA (leave alone)'};
     outputParams = inputdlg(prompt,dlgtitle,dims,defParams);
     
     eventOutFile = outputParams(1);
     maxOutFile = outputParams(2);
     minOutFile = outputParams(3);
+    phaseOutFile = outputParams(4);
 
-% Events and Mins    
-elseif valEvent == 1 && valMax == 2 && valMin == 1
+% 3. Events, maxes, and phases
+elseif valEvent == 1 && valMax == 1 && valMin == 2 && valPhase == 1
     prompt = {'Events file name?',...
-        'Maxes file name?'...
-        'Mins file name?'};
+        'Maxes file name?',...
+        'Mins file name?',...
+        'Phases file name?'};
     dlgtitle = 'Provide output file names (Inlcude extension; .csv or .xls recommended)';
     dims = [1 45];
-    defParams = {'eventMaster.csv','NA (leave alone)','minMaster.csv'};
+    defParams = {'eventMaster.csv','maxMaster.csv','NA (leave alone)','phaseMaster.csv'};
     outputParams = inputdlg(prompt,dlgtitle,dims,defParams);
     
     eventOutFile = outputParams(1);
     maxOutFile = outputParams(2);
     minOutFile = outputParams(3);
+    phaseOutFile = outputParams(4);
 
-% Maxes and Mins only
-elseif valEvent == 2 && valMax == 1 && valMin == 1
+% 4. Events, Mins, and Phases
+elseif valEvent == 1 && valMax == 2 && valMin == 1 && valPhase == 1
     prompt = {'Events file name?',...
-        'Maxes file name?'...
-        'Mins file name?'};
+        'Maxes file name?',...
+        'Mins file name?',...
+        'Phases file name?'};
     dlgtitle = 'Provide output file names (Inlcude extension; .csv or .xls recommended)';
     dims = [1 45];
-    defParams = {'NA (leave alone)','maxMaster.csv','minMaster.csv'};
+    defParams = {'eventMaster.csv','NA (leave alone)','minMaster.csv','phaseMaster.csv'};
     outputParams = inputdlg(prompt,dlgtitle,dims,defParams);
     
     eventOutFile = outputParams(1);
     maxOutFile = outputParams(2);
     minOutFile = outputParams(3);
-
-% Only Events    
-elseif valEvent == 1 && valMax == 2 && valMin == 2
+    phaseOutFile = outputParams(4);
+    
+ % 5. Maxes, mins, and phases
+    elseif valEvent == 2 && valMax == 1 && valMin == 1 && valPhase == 1
     prompt = {'Events file name?',...
-        'Maxes file name?'...
-        'Mins file name?'};
+        'Maxes file name?',...
+        'Mins file name?',...
+        'Phases file name?'};
     dlgtitle = 'Provide output file names (Inlcude extension; .csv or .xls recommended)';
     dims = [1 45];
-    defParams = {'eventMaster.csv','NA (leave alone)','NA (leave alone)'};
+    defParams = {'NA (leave alone)','maxMaster.csv','minMaster.csv','phaseMaster.csv'};
     outputParams = inputdlg(prompt,dlgtitle,dims,defParams);
     
     eventOutFile = outputParams(1);
     maxOutFile = outputParams(2);
     minOutFile = outputParams(3);
-
-% Only Maxes
-elseif valEvent == 2 && valMax == 1 && valMin == 2
+    phaseOutFile = outputParams(4);
+    
+% 6. Events and Maxes
+elseif valEvent == 1 && valMax == 1 && valMin == 2 && valPhase == 2
     prompt = {'Events file name?',...
-        'Maxes file name?'...
-        'Mins file name?'};
+        'Maxes file name?',...
+        'Mins file name?',...
+        'Phases file name?'};
     dlgtitle = 'Provide output file names (Inlcude extension; .csv or .xls recommended)';
     dims = [1 45];
-    defParams = {'NA (leave alone)','maxMaster.csv','NA (leave alone)'};
+    defParams = {'eventMaster.csv','maxMaster.csv','NA (leave alone)','NA (leave alone)'};
     outputParams = inputdlg(prompt,dlgtitle,dims,defParams);
     
     eventOutFile = outputParams(1);
     maxOutFile = outputParams(2);
     minOutFile = outputParams(3);
+    phaseOutFile = outputParams(4);
 
-% Only mins
-elseif valEvent == 2 && valMax == 2 && valMin == 1
+% 7. Events and Mins    
+elseif valEvent == 1 && valMax == 2 && valMin == 1 && valPhase == 2
     prompt = {'Events file name?',...
-        'Maxes file name?'...
-        'Mins file name?'};
+        'Maxes file name?',...
+        'Mins file name?',...
+        'Phases file name?'};
     dlgtitle = 'Provide output file names (Inlcude extension; .csv or .xls recommended)';
     dims = [1 45];
-    defParams = {'NA (leave alone)','NA (leave alone)','minMaster.csv'};
+    defParams = {'eventMaster.csv','NA (leave alone)','minMaster.csv','NA (leave alone)'};
     outputParams = inputdlg(prompt,dlgtitle,dims,defParams);
     
     eventOutFile = outputParams(1);
     maxOutFile = outputParams(2);
     minOutFile = outputParams(3);
+    phaseOutFile = outputParams(4);
+    
+% 8. Events and Phases
+elseif valEvent == 1 && valMax == 2 && valMin == 2 && valPhase == 1
+    prompt = {'Events file name?',...
+        'Maxes file name?',...
+        'Mins file name?',...
+        'Phases file name?'};
+    dlgtitle = 'Provide output file names (Inlcude extension; .csv or .xls recommended)';
+    dims = [1 45];
+    defParams = {'eventMaster.csv','NA (leave alone)','NA (leave alone)','phaseMaster.csv'};
+    outputParams = inputdlg(prompt,dlgtitle,dims,defParams);
+    
+    eventOutFile = outputParams(1);
+    maxOutFile = outputParams(2);
+    minOutFile = outputParams(3);
+    phaseOutFile = outputParams(4);
 
+% 9. Maxes and Mins
+elseif valEvent == 2 && valMax == 1 && valMin == 1 && valPhase == 2
+    prompt = {'Events file name?',...
+        'Maxes file name?',...
+        'Mins file name?',...
+        'Phase file name?'};
+    dlgtitle = 'Provide output file names (Inlcude extension; .csv or .xls recommended)';
+    dims = [1 45];
+    defParams = {'NA (leave alone)','maxMaster.csv','minMaster.csv','NA (leave alone)'};
+    outputParams = inputdlg(prompt,dlgtitle,dims,defParams);
+    
+    eventOutFile = outputParams(1);
+    maxOutFile = outputParams(2);
+    minOutFile = outputParams(3);
+    phaseOutFile = outputParams(4);
+    
+% 10. Maxes and Phases
+elseif valEvent == 2 && valMax == 1 && valMin == 2 && valPhase == 1
+    prompt = {'Events file name?',...
+        'Maxes file name?',...
+        'Mins file name?',...
+        'Phases file name?'};
+    dlgtitle = 'Provide output file names (Inlcude extension; .csv or .xls recommended)';
+    dims = [1 45];
+    defParams = {'NA (leave alone)','maxMaster.csv','NA (leave alone)','phaseMaster.csv'};
+    outputParams = inputdlg(prompt,dlgtitle,dims,defParams);
+    
+    eventOutFile = outputParams(1);
+    maxOutFile = outputParams(2);
+    minOutFile = outputParams(3);
+    phaseOutFile = outputParams(4);
 
-% Nothing selected
-elseif valEvent == 2 && valMax == 2 && valMin == 2
+% 11. Mins and Phases
+elseif valEvent == 2 && valMax == 2 && valMin == 1 && valPhase == 1
+    prompt = {'Events file name?',...
+        'Maxes file name?',...
+        'Mins file name?',...
+        'Phases file name?'};
+    dlgtitle = 'Provide output file names (Inlcude extension; .csv or .xls recommended)';
+    dims = [1 45];
+    defParams = {'NA (leave alone)','NA (leave alone)','minMaster.csv','phaseMaster.csv'};
+    outputParams = inputdlg(prompt,dlgtitle,dims,defParams);
+    
+    eventOutFile = outputParams(1);
+    maxOutFile = outputParams(2);
+    minOutFile = outputParams(3);
+    phaseOutFile = outputParams(4);
+    
+% 12. Only Events    
+elseif valEvent == 1 && valMax == 2 && valMin == 2 && valPhase == 2
+    prompt = {'Events file name?',...
+        'Maxes file name?',...
+        'Mins file name?',...
+        'Phases file name?'};
+    dlgtitle = 'Provide output file names (Inlcude extension; .csv or .xls recommended)';
+    dims = [1 45];
+    defParams = {'eventMaster.csv','NA (leave alone)','NA (leave alone)','NA (leave alone)'};
+    outputParams = inputdlg(prompt,dlgtitle,dims,defParams);
+    
+    eventOutFile = outputParams(1);
+    maxOutFile = outputParams(2);
+    minOutFile = outputParams(3);
+    phaseOutFile = outputParams(4);
+    
+% 13. Only Maxes
+elseif valEvent == 2 && valMax == 1 && valMin == 2 && valPhase == 2
+    prompt = {'Events file name?',...
+        'Maxes file name?',...
+        'Mins file name?',...
+        'Phases file name?'};
+    dlgtitle = 'Provide output file names (Inlcude extension; .csv or .xls recommended)';
+    dims = [1 45];
+    defParams = {'NA (leave alone)','maxMaster.csv','NA (leave alone)','NA (leave alone)'};
+    outputParams = inputdlg(prompt,dlgtitle,dims,defParams);
+    
+    eventOutFile = outputParams(1);
+    maxOutFile = outputParams(2);
+    minOutFile = outputParams(3);
+    phaseOutFile = outputParams(4);
+
+% 14. Only mins
+elseif valEvent == 2 && valMax == 2 && valMin == 1 && valPhase == 2
+    prompt = {'Events file name?',...
+        'Maxes file name?',...
+        'Mins file name?',...
+        'Phases file name?'};
+    dlgtitle = 'Provide output file names (Inlcude extension; .csv or .xls recommended)';
+    dims = [1 45];
+    defParams = {'NA (leave alone)','NA (leave alone)','minMaster.csv','NA (leave alone)'};
+    outputParams = inputdlg(prompt,dlgtitle,dims,defParams);
+    
+    eventOutFile = outputParams(1);
+    maxOutFile = outputParams(2);
+    minOutFile = outputParams(3);
+    phaseOutFile = outputParams(4);
+    
+% 15. Only Phases
+elseif valEvent == 2 && valMax == 2 && valMin == 2 && valPhase == 1
+    prompt = {'Events file name?',...
+        'Maxes file name?',...
+        'Mins file name?',...
+        'Phases file name?'};
+    dlgtitle = 'Provide output file names (Inlcude extension; .csv or .xls recommended)';
+    dims = [1 45];
+    defParams = {'NA (leave alone)','NA (leave alone)','NA (leave alone)','phaseMaster.csv'};
+    outputParams = inputdlg(prompt,dlgtitle,dims,defParams);
+    
+    eventOutFile = outputParams(1);
+    maxOutFile = outputParams(2);
+    minOutFile = outputParams(3);
+    phaseOutFile = outputParams(4);
+    
+% 16 . Nothing selected
+elseif valEvent == 2 && valMax == 2 && valMin == 2 && valPhase == 2
     error('You dont want any data?');
-
-end   
+end  
 %% Event Abbreviations?
 
 if valEvent == 1
@@ -232,6 +381,46 @@ if valEvent == 1
         end
 end
 
+%% Phase abbreviations
+
+if valPhase == 1
+    if numEvents == 3
+    prompt = {'Phase 1 abbreviation',...
+            'Phase 2 abbreviation'};
+        dlgtitle = 'Phase Abbreviations';
+        dims = [1 45];
+        defEvents = {'p1','p2'};
+        phaseParams = inputdlg(prompt,dlgtitle,dims,defEvents);
+    end
+    
+    if numEvents == 4
+        prompt = {'Phase 1 abbreviation',...
+            'Phase 2 abbreviation',...
+            'Phase 3 abbreviation'};
+        dlgtitle = 'Phase Abbreviations';
+        dims = [1 45];
+        defEvents = {'p1','p2','p3'};
+        phaseParams = inputdlg(prompt,dlgtitle,dims,defEvents);
+    end
+    
+    if numEvents == 5
+            prompt = {'Phase 1 abbreviation'...
+            'Phase 2 abbreviation'...
+            'Phase 3 abbreviation',...
+            'Phase 4 abbreviation'};
+        dlgtitle = 'Phase Abbreviations';
+        dims = [1 45];
+        defEvents = {'p1','p2','p3','p4'};
+        phaseParams = inputdlg(prompt,dlgtitle,dims,defEvents);
+    end
+        % Script stopper if cancel button is selected when defining 
+        % event abbreviations
+        phaseStop = size(phaseParams);
+        
+        if phaseStop == 0
+            error('phase abbreviations were not defined');
+        end
+end
 %% Run eventFinder if selected
 
 if valEvent == 1
@@ -253,7 +442,7 @@ if valEvent == 1
     saveAveFile = join(strAveMaster,'/');
 
 % Builds selection box. Sort by event: eventSort = 1; Sort by participant: eventSort = 2
-eventSort = listdlg('PromptString', 'Average event master grouped by...?', ...
+eventSort = listdlg('PromptString', 'eventMaster grouped by...?', ...
     'SelectionMode', 'single', ...
     'ListString',{'Event', 'Participant'}, ...
     'Name', 'VAverage Event Sorting', ...
@@ -326,6 +515,41 @@ if valMin == 1
     delete extractData.m
 end
 
-%% Display when complete  
+%% Run if phaseFinder is selected
+
+if valPhase == 1
+    websave('extractData.m',...
+            'https://raw.githubusercontent.com/kww-22/matlab/master/extractData.m');
+    websave('phaseFinder.m',...
+        'https://raw.githubusercontent.com/kww-22/matlab/master/smml_gui/phaseFinder.m');
+    
+    % Create character strings for saved output files
+    avefile = ['ave' outputParams(4)];
+    avefile = join(avefile,'');
+
+    strMaster = [path outputParams(4)];
+    strAveMaster = [path avefile];
+
+    saveFile = join(strMaster,'/');
+
+    saveAveFile = join(strAveMaster,'/');
+    
+    % Builds selection box. Sort by phase: phaseSort = 1; Sort by participant: phaseSort = 2
+    phaseSort = listdlg('PromptString', 'phaseMaster grouped by...?', ...
+    'SelectionMode', 'single', ...
+    'ListString',{'Phase', 'Participant'}, ...
+    'Name', 'VAverage Event Sorting', ...
+    'ListSize', [225 100]);
+    
+    % Run phaseFinder.m
+    [phaseMaster, avePhaseMaster] = phaseFinder(fileNames,numFiles,...
+    numTrials,varRow,phaseSort,saveFile,saveAveFile);
+    
+    % Remove downloaded files from selected directory
+    delete phaseFinder.m
+    delete extractData.m
+end
+
+%% Display when complete
 clc
 disp('the script finished')

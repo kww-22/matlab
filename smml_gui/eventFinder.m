@@ -27,7 +27,7 @@ function [eventMaster,aveEventMaster] = eventFinder(fileNames,numFiles,...
 % Sports Medicine and Movement Lab
 % School of Kinesiology; Auburn University
 % Auburn, AL, USA
-% Last Updated: 2020-06-25
+% Last Updated: 2020-07-07
 % *************************************************************************
 %% Get file dimensions from first file in directory to create master table
 
@@ -203,7 +203,7 @@ end
 
 
 
-%% Save maxMaster and aveMaxMaster
+%% Save eventMaster and aveEventMaster
 
 writetable(eventMaster,saveFile{:});
 writetable(aveEventMaster,saveAveFile{:});
