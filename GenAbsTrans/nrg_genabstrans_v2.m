@@ -135,11 +135,16 @@ for i = 1:numFiles
     clear txt
 
     %% Get event timings and trim trial
-
+    
+    % find event indices
     events = find(data.VEM_0 == 1);
     
-    data = data(events(2):events(end),:);
+    % trim data to only include rows between SFC & MIR
+    data = data(events(2):events(end),:); 
+    % if including PKH in analysis, change "events(2)" to "events(1)"
+    % and un-comment necessary lines below
     
+    % redefine and label event indices
     events = find(data.VEM_0 == 1);
    %pkh = events(1);    % Peak knee height
     sfc = events(1);    % Stride foot contact
@@ -154,8 +159,7 @@ for i = 1:numFiles
     
     % event timing as a % between sfc and mir
     mer_master(i,1) = (mer - sfc)/(mir - sfc);
-    br_master(i,1) = (br - sfc)/(mir - sfc);   
-
+    br_master(i,1) = (br - sfc)/(mir - sfc); 
 
     %% Calculate energy transfer, generation, & absorption time series at shoulder
     
