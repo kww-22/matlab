@@ -346,16 +346,33 @@ if valPhase == 1
             error('phase abbreviations were not defined');
         end
 end
+%% Ask for plots
+
+websave('extractData.m',...
+    'https://raw.githubusercontent.com/kww-22/matlab/master/extractData.m');
+% Extract first file in directory and it's import options
+data = extractData(fileNames.fileNames{1},'text',varRow);
+opts = detectImportOptions(fileNames.fileNames{1},'FileType','text');
+
+varNames = opts.VariableNames;
+clear opts
+
+list = string(varNames);
+
+% Dialog box to select which variables user would like plotted
+[indx,tf] = listdlg('ListString',list,...
+    'PromptString','Would you like any time-series plots?',...
+    'CancelString','No thanks',...
+    'ListSize',[200 300]);
+
 %% Run eventFinder if selected
 
 if valEvent == 1
-    % download maxFinder from online repository
-     websave('extractData.m',...
-             'https://raw.githubusercontent.com/kww-22/matlab/master/extractData.m');
+    % download eventFinder from online repository
      websave('eventFinder.m',...
          'https://raw.githubusercontent.com/kww-22/matlab/master/smml_gui/eventFinder.m');
 
-% Create character strings for saved output files
+    % Create character strings for saved output files
     avefile = ['ave' outputParams(1)];
     avefile = join(avefile,'');
 
@@ -366,28 +383,30 @@ if valEvent == 1
 
     saveAveFile = join(strAveMaster,'/');
 
-% Builds selection box. Sort by event: eventSort = 1; Sort by participant: eventSort = 2
-eventSort = listdlg('PromptString', 'eventMaster grouped by...?', ...
-    'SelectionMode', 'single', ...
-    'ListString',{'Event', 'Participant'}, ...
-    'Name', 'VAverage Event Sorting', ...
-    'ListSize', [225 100]);
+    % Builds selection box. Sort by event: eventSort = 1; Sort by participant: eventSort = 2
+    eventSort = listdlg('PromptString', 'eventMaster grouped by...?', ...
+        'SelectionMode', 'single', ...
+        'ListString',{'Event', 'Participant'}, ...
+        'Name', 'VAverage Event Sorting', ...
+        'ListSize', [225 100]);
 
-    % Run maxFinder.m;
+    % Error trapper 
+    if size(eventSort) == 0
+    error('events have to be sorted by some way if we are to avoid anarchy')
+    end
+
+    % Run eventFinder.m;
     [eventMaster,aveEventMaster] = eventFinder(fileNames,numFiles,...
         numTrials,numEvents,varRow,eventParams,eventSort,saveFile,saveAveFile);
 
     % Remove downloaded files from selected directory
     delete eventFinder.m
-    delete extractData.m
 end
 
 %% Run maxFinder if selected
 
 if valMax == 1
-    % download extractData and maxFinder from online repository
-    websave('extractData.m',...
-            'https://raw.githubusercontent.com/kww-22/matlab/master/extractData.m');
+    % download maxFinder from online repository
     websave('maxFinder.m',...
         'https://raw.githubusercontent.com/kww-22/matlab/master/smml_gui/maxFinder.m');
     
@@ -408,15 +427,12 @@ if valMax == 1
     
     % Remove downloaded files from selected directory
     delete maxFinder.m
-    delete extractData.m
 end
 
 %% Run minFinder if selected
 
 if valMin == 1
-    % download extractData and minFinder from online repository
-    websave('extractData.m',...
-            'https://raw.githubusercontent.com/kww-22/matlab/master/extractData.m');
+    % download minFinder from online repository
     websave('minFinder.m',...
         'https://raw.githubusercontent.com/kww-22/matlab/master/smml_gui/minFinder.m');
     
@@ -437,14 +453,12 @@ if valMin == 1
     
     % Remove downloaded files from selected directory
     delete minFinder.m
-    delete extractData.m
 end
 
 %% Run if phaseFinder is selected
 
 if valPhase == 1
-    websave('extractData.m',...
-            'https://raw.githubusercontent.com/kww-22/matlab/master/extractData.m');
+    % download minFinder from online repository
     websave('phaseFinder.m',...
         'https://raw.githubusercontent.com/kww-22/matlab/master/smml_gui/phaseFinder.m');
     
@@ -465,21 +479,50 @@ if valPhase == 1
     'ListString',{'Phase', 'Participant'}, ...
     'Name', 'VAverage Event Sorting', ...
     'ListSize', [225 100]);
-    
+
+    % Error trapper 
+    if size(eventSort) == 0
+    error('phases have to be sorted by some way if we are to avoid anarchy')
+    end
+
     % Run phaseFinder.m
     [phaseMaster, avePhaseMaster] = phaseFinder(fileNames,numFiles,...
     numTrials,numEvents,varRow,phaseParams,phaseSort,saveFile,saveAveFile);
     
     % Remove downloaded files from selected directory
     delete phaseFinder.m
-    delete extractData.m
+end
+%% Build plots (if selected)
+
+if tf == 1 % tf == 1 when user selected at least one variable to plot
+       
+    % get number of requested plots from dialog box
+    numPlots = length(indx);
+    % initialize figure window
+    figure('color','w');
+    
+    if numPlots <= 2
+        for i = 1:numPlots
+        subplot(1,numPlots,i)
+        plot(data{:,indx});
+        yline(0,'LineWidth',2)
+    else
+        for i = 1:numPlots
+        hold on
+        subplot(round(numPlots/3),ceil(numPlots/3),i)
+        plot(data{:,indx(i)});
+        yline(0,'LineWidth',2)
+        end
+    end
 end
 
+
 %% Clean up workspace and display complete message
+delete extractData.m
 clear ans avefile defEvents defParams dims dlgtitle eventOutFile...
     eventSort eventStop maxOutFile minOutFile outputParams path...
     phaseOutFile phaseParams phaseSort phaseStop prompt saveAveFile...
-    saveFile strAveMaster strMaster trialParams valEvent valMax valMin...
+    saveFile strAveMaster strMaster trialParams tf valEvent valMax valMin...
     valPhase
 clc
-disp('the script finished')
+disp('the script finished; your quest is over')
