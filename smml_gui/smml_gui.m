@@ -7,6 +7,7 @@
 %       2. Min of variables btwn first & last event
 %       3. Values of variables @ events
 %       4. Average value of variables between events (over phases)
+%       5. Plot time series for variables of interest (in progress)
 %
 % User may also provide custom phase labels, event labels and custom output
 % file names
@@ -22,7 +23,7 @@
 % Sports Medicine and Movement Lab
 % School of Kinesiology; Auburn University
 % Auburn, AL, USA
-% Last Updated: 2020-07-07
+% Last Updated: 2020-07-10
 % *************************************************************************
 %% Gather directory information
 
@@ -506,6 +507,7 @@ if tf == 1 % tf == 1 when user selected at least one variable to plot
         subplot(1,numPlots,i)
         plot(data{:,indx});
         yline(0,'LineWidth',2)
+        end
     else
         for i = 1:numPlots
         hold on
