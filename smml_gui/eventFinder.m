@@ -201,12 +201,9 @@ elseif eventSort == 2
     aveEventMaster = sortrows(aveEventMaster,'fileName');
 end
 
-
+end
 
 %% Save eventMaster and aveEventMaster
 
 writetable(eventMaster,saveFile{:});
 writetable(aveEventMaster,saveAveFile{:});
-
-end
-
