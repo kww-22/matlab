@@ -491,7 +491,7 @@ if valPhase == 1
     'ListSize', [225 100]);
 
     % Error trapper 
-    if size(eventSort) == 0
+    if size(phaseSort) == 0
     error('phases have to be sorted by some way if we are to avoid anarchy')
     end
 
