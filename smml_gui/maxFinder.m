@@ -78,8 +78,9 @@ end
 
 % Add every nth trial name to the beginning of avemaster
 aveMaxMaster = addvars(aveMaxMaster,files(1:numTrials:length(files)),'before',1);
+
+% Give aveMaxMaster the same variable names as maxMaster
 aveMaxMaster.Properties.VariableNames = maxMaster.Properties.VariableNames;
-aveMaxMaster.Properties.VariableTypes = maxMaster.VariableTypes;
 
 %% Summary statistics?
 if sum_stats == 1

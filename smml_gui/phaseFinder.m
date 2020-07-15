@@ -162,7 +162,7 @@ avePhaseMaster = renamevars(avePhaseMaster,["efiles","repphases","Frame_"],["par
 
 % Give avePhaseMaster the same variable names and properties as phaseMaster
 avePhaseMaster.Properties.VariableNames = phaseMaster.Properties.VariableNames;
-avePhaseMaster.Properties.VariableTypes = phaseMaster.VariableTypes;
+
 %% Sort tables
 
 if phaseSort == 1

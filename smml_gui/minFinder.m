@@ -79,9 +79,8 @@ end
 % Add every nth trial name to the beginning of avemaster
 aveMinMaster = addvars(aveMinMaster,files(1:numTrials:length(files)),'before',1);
 
-% Give aveMinMaster the same variable names and properties as minMaster
+% Give aveMinMaster the same variable names as minMaster
 aveMinMaster.Properties.VariableNames = minMaster.Properties.VariableNames;
-aveMinMaster.Properties.VariableTypes = minMaster.VariableTypes;
 
 %% Summary statistics?
 if sum_stats == 1

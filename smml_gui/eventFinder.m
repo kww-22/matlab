@@ -190,9 +190,9 @@ repevents = repelem(events,numPeeps);
 aveEventMaster = addvars(aveEventMaster,efiles,repevents,'after',2);
 aveEventMaster = removevars(aveEventMaster,[1 2]);
 
-% Give aveEventMaster the same variable names and properties as eventMaster
+% Give aveEventMaster the same variable names as eventMaster
 aveEventMaster.Properties.VariableNames = eventMaster.Properties.VariableNames;
-aveEventMaster.Properties.VariableTypes = eventMaster.VariableTypes;
+
 
 eventMaster = renamevars(eventMaster,["efiles" "repevents"],["fileName" "event"]);
 aveEventMaster = renamevars(aveEventMaster,["efiles" "repevents"],["fileName" "event"]);
