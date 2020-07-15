@@ -38,7 +38,6 @@ numVars = width(data);
 % directory
 maxMaster = array2table(NaN(numFiles,numVars));
 maxMaster.Properties.VariableNames = opts.VariableNames;
-varTypes = opts.VariableTypes;
 
 %% Populate master table with data from individual trials
 
@@ -86,7 +85,11 @@ aveMaxMaster.Properties.VariableNames = maxMaster.Properties.VariableNames;
 if sum_stats == 1
 
     %% Write summary statistics table for maxMaster
-
+    
+    % I don't know what this does but I found it online and it get the
+    % variable types for each table column
+    varTypes = varfun(@class,eventMaster,'OutputFormat','cell');
+    
     % Find elements of varClasses that match "double"
     numericVars = find(varTypes == "double");
 
@@ -107,7 +110,7 @@ if sum_stats == 1
         'RowNames', maxMaster.Properties.VariableNames(numericVars));
 
     %% Write Summary Statistics Table for aveMaxMaster
-
+    
     % Trim eventMaster to only include numeric variables
     myVars = aveMaxMaster(:,numericVars);
 

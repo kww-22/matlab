@@ -42,7 +42,6 @@ numVars = width(data);
 % directory
 eventMaster = array2table(NaN(numFiles*numEvents,numVars));
 eventMaster.Properties.VariableNames = opts.VariableNames;
-varTypes = opts.VariableTypes;
 
 %% Populate master table with data from individual trials
 
@@ -211,7 +210,11 @@ end
 if sum_stats == 1
 
     %% Write summary statistics table for eventMaster
-
+    
+    % I don't know what this does but I found it online and it get the
+    % variable types for each table column
+    varTypes = varfun(@class,eventMaster,'OutputFormat','cell');
+    
     % Find elements of varClasses that match "double"
     numericVars = find(varTypes == "double");
 
