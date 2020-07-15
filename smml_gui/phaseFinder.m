@@ -41,7 +41,7 @@ numVars = width(data);
 % directory
 phaseMaster = array2table(NaN(numFiles*(numEvents-1),numVars));
 phaseMaster.Properties.VariableNames = opts.VariableNames;
-phaseMaster.Properties.VariableTypes = opts.VariableTypes;
+varTypes = opts.VariableTypes;
 
 %% Populate master table with data from individual trials
 
@@ -178,11 +178,8 @@ if sum_stats == 1
 
     %% Write summary statistics table for phaseMaster
 
-    % I don't know what this does but I found it online and it works...
-    varClasses = varfun(@class,phaseMaster,'OutputFormat','cell');
-
     % Find elements of varClasses that match "double"
-    numericVars = find(varClasses == "double");
+    numericVars = find(varTypes == "double");
 
     % Trim eventMaster to only include numeric variables
     myVars = phaseMaster(:,numericVars);
@@ -201,12 +198,6 @@ if sum_stats == 1
         'RowNames', phaseMaster.Properties.VariableNames(numericVars));
 
     %% Write Summary Statistics Table for avePhaseMaster
-
-    % I don't know what this does but I found it online and it works...
-    varClasses = varfun(@class,avePhaseMaster,'OutputFormat','cell');
-
-    % Find elements of varClasses that match "double"
-    numericVars = find(varClasses == "double");
 
     % Trim eventMaster to only include numeric variables
     myVars = avePhaseMaster(:,numericVars);

@@ -42,7 +42,7 @@ numVars = width(data);
 % directory
 eventMaster = array2table(NaN(numFiles*numEvents,numVars));
 eventMaster.Properties.VariableNames = opts.VariableNames;
-eventMaster.Properties.VariableTypes = opts.VariableTypes;
+varTypes = opts.VariableTypes;
 
 %% Populate master table with data from individual trials
 
@@ -212,11 +212,8 @@ if sum_stats == 1
 
     %% Write summary statistics table for eventMaster
 
-    % I don't know what this does but I found it online and it works...
-    varClasses = varfun(@class,eventMaster,'OutputFormat','cell');
-
     % Find elements of varClasses that match "double"
-    numericVars = find(varClasses == "double");
+    numericVars = find(varTypes == "double");
 
     % Trim eventMaster to only include numeric variables
     myVars = eventMaster(:,numericVars);
@@ -235,12 +232,6 @@ if sum_stats == 1
         'RowNames', eventMaster.Properties.VariableNames(numericVars));
 
     %% Write Summary Statistics Table for aveEventMaster
-
-    % I don't know what this does but I found it online and it works...
-    varClasses = varfun(@class,aveEventMaster,'OutputFormat','cell');
-
-    % Find elements of varClasses that match "double"
-    numericVars = find(varClasses == "double");
 
     % Trim eventMaster to only include numeric variables
     myVars = aveEventMaster(:,numericVars);
