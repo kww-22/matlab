@@ -120,10 +120,10 @@ if sum_stats == 1
     quarts = prctile(myVars{:,:},[25 50 75])';
 
     % Combine descriptives into one array
-    summary_stats = [means std_dev quarts];
+    ave_summary_stats = [means std_dev quarts];
 
     % Convert descriptive array to table
-    ave_summary_stats = array2table(summary_stats,...
+    ave_summary_stats = array2table(ave_summary_stats,...
         'VariableNames',{'mean','std','quart_25','median','quart_75'},...
         'RowNames', aveMaxMaster.Properties.VariableNames(numericVars));
 end
