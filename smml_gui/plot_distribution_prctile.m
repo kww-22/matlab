@@ -1,4 +1,7 @@
 function plot_distribution_prctile(varargin)
+% Copyright (c) 2018, John A. Onofrey
+% All rights reserved.
+%
 % PLOT_DISTRIBUTION_PRCTILE(X,Y) - Plots the median with percentile errors as a shaded region in the open 
 % figure window.
 % Inputs:

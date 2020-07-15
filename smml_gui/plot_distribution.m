@@ -1,4 +1,7 @@
 function plot_distribution(varargin)
+% Copyright (c) 2018, John A. Onofrey
+% All rights reserved.
+% 
 % PLOT_DISTRIBUTION(X,Y) - Plots the mean with standard deviation errors as a shaded region in the open 
 % figure window.
 % Inputs:
