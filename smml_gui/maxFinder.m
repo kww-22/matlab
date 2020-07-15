@@ -126,14 +126,16 @@ if sum_stats == 1
     ave_summary_stats = array2table(ave_summary_stats,...
         'VariableNames',{'mean','std','quart_25','median','quart_75'},...
         'RowNames', aveMaxMaster.Properties.VariableNames(numericVars));
+    
+    % Write summary stats tables
+    writetable(summary_stats,'max_sum_stat.csv','WriteRowNames',true);
+    writetable(ave_summary_stats,'aveMax_sum_stat.csv','WriteRowNames',true);
 end
 
 %% Save maxMaster and aveMaxMaster with provided file names
 
 writetable(maxMaster,saveFile{:});
 writetable(aveMaxMaster,saveAveFile{:});
-writetable(summary_stats,'max_sum_stat.csv','WriteRowNames',true);
-writetable(ave_summary_stats,'aveMax_sum_stat.csv','WriteRowNames',true);
 
 end
 

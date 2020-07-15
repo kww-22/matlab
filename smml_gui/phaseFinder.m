@@ -220,13 +220,15 @@ if sum_stats == 1
     ave_summary_stats = array2table(ave_summary_stats,...
         'VariableNames',{'mean','std','quart_25','median','quart_75'},...
         'RowNames', avePhaseMaster.Properties.VariableNames(numericVars));
+    
+    % Write summary stats tables
+    writetable(summary_stats,'phase_sum_stat.csv','WriteRowNames',true);
+    writetable(ave_summary_stats,'avePhase_sum_stat.csv','WriteRowNames',true);
 end
 %% Save phaseMaster and avePhaseMaster
 
 writetable(phaseMaster,saveFile{:});
 writetable(avePhaseMaster,saveAveFile{:});
-writetable(summary_stats,'phase_sum_stat.csv','WriteRowNames',true);
-writetable(ave_summary_stats,'avePhase_sum_stat.csv','WriteRowNames',true);
 
 end
 

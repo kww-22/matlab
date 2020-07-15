@@ -361,21 +361,6 @@ end
 
 websave('extractData.m',...
     'https://raw.githubusercontent.com/kww-22/matlab/master/extractData.m');
-% Extract first file in directory and it's import options
-data = extractData(fileNames.fileNames{1},'text',varRow);
-opts = detectImportOptions(fileNames.fileNames{1},'FileType','text');
-
-varNames = opts.VariableNames;
-clear opts
-
-list = string(varNames);
-
-% Dialog box to select which variables user would like plotted
-[indx,tf] = listdlg('ListString',list,...
-    'PromptString','Would you like any time-series plots?',...
-    'CancelString','No thanks',...
-    'ListSize',[200 300]);
-
 %% Run eventFinder if selected
 
 if valEvent == 1
@@ -505,7 +490,26 @@ if valPhase == 1
     % Remove downloaded files from selected directory
     delete phaseFinder.m
 end
-%% Build plots (if selected) (in progress)
+
+%% Plots?
+
+% Extract first file in directory and it's import options
+data = extractData(fileNames.fileNames{1},'text',varRow);
+opts = detectImportOptions(fileNames.fileNames{1},'FileType','text');
+
+% Get variable names for selection dialog
+varNames = opts.VariableNames;
+clear opts
+
+list = string(varNames);
+
+% Dialog box to select which variables user would like plotted
+[indx,tf] = listdlg('ListString',list,...
+    'PromptString','Would you like any time-series plots?',...
+    'CancelString','No thanks',...
+    'ListSize',[200 300]);
+
+% Build plots (if selected) (in progress)
 
 if tf == 1 % tf == 1 when user selected at least one variable to plot
        
@@ -514,7 +518,7 @@ if tf == 1 % tf == 1 when user selected at least one variable to plot
     % initialize figure window
     figure('color','w');
     
-    if numPlots <= 2
+    if numPlots / 3 <= 1
         for i = 1:numPlots
         subplot(1,numPlots,i)
         plot(data{:,indx});
@@ -523,7 +527,7 @@ if tf == 1 % tf == 1 when user selected at least one variable to plot
     else
         for i = 1:numPlots
         hold on
-        subplot(round(numPlots/3),ceil(numPlots/3),i)
+        subplot(ceil(numPlots/3),3,i)
         plot(data{:,indx(i)});
         yline(0,'LineWidth',2)
         end

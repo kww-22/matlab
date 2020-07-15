@@ -251,10 +251,12 @@ if sum_stats == 1
     ave_summary_stats = array2table(ave_summary_stats,...
         'VariableNames',{'mean','std','quart_25','median','quart_75'},...
         'RowNames', aveEventMaster.Properties.VariableNames(numericVars));
+    
+    % Write summary stats tables
+    writetable(summary_stats,'events_sum_stat.csv','WriteRowNames',true);
+    writetable(ave_summary_stats,'aveEvents_sum_stat.csv','WriteRowNames',true);
 end
 %% Save eventMaster and aveEventMaster
 
 writetable(eventMaster,saveFile{:});
 writetable(aveEventMaster,saveAveFile{:});
-writetable(summary_stats,'events_sum_stat.csv','WriteRowNames',true);
-writetable(ave_summary_stats,'aveEvents_sum_stat.csv','WriteRowNames',true);

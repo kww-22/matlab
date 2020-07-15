@@ -127,12 +127,14 @@ if sum_stats == 1
     ave_summary_stats = array2table(ave_summary_stats,...
         'VariableNames',{'mean','std','quart_25','median','quart_75'},...
         'RowNames', aveMinMaster.Properties.VariableNames(numericVars));
+    
+    % Write summary stats tables
+    writetable(summary_stats,'min_sum_stat.csv','WriteRowNames',true);
+    writetable(ave_summary_stats,'aveMin_sum_stat.csv','WriteRowNames',true);
 end
 %% Save minMaster and aveMinMaster with provided file names
 
 writetable(minMaster,saveFile{:});
 writetable(aveMinMaster,saveAveFile{:});
-writetable(summary_stats,'min_sum_stat.csv','WriteRowNames',true);
-writetable(ave_summary_stats,'aveMin_sum_stat.csv','WriteRowNames',true);
 
 end
