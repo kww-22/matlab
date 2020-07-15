@@ -149,6 +149,10 @@ elseif numEvents == 5
     end
 end
 %% Combine individual phase masters into grand phase master
+
+phaseMaster = renamevars(phaseMaster,["efiles","repphases","Frame_"],...
+["participant","phase","frame"]);
+
 aveFileNames = phaseMaster.participant(pStartRow);
 aveEventNames = phaseMaster.phase(1:numTrials:height(phaseMaster));
 
