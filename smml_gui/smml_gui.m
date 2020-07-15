@@ -8,6 +8,8 @@
 %       3. Values of variables @ events
 %       4. Average value of variables between events (over phases)
 %       5. Plot time series for variables of interest (in progress)
+%       6. Basic summary statistics (mean; standard deviation; 25th, 50th,
+%       and 75th percentiles)
 %
 % User may also provide custom phase labels, event labels and custom output
 % file names
@@ -16,14 +18,14 @@
 %   NA
 %
 % Outputs:
-%   depending on which processes user selects saves various .csv master and 
+%   depending on which processes user selects, saves various .csv master and 
 %   average master files to selected directory
 %
 % Author: Kyle Wasserberger
 % Sports Medicine and Movement Lab
 % School of Kinesiology; Auburn University
 % Auburn, AL, USA
-% Last Updated: 2020-07-10
+% Last Updated: 2020-07-15
 % *************************************************************************
 %% Gather directory information
 
