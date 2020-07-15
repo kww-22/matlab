@@ -93,6 +93,14 @@ valPhase = listdlg('PromptString', 'Average of variables across phases?', ...
     'Name', 'Values at Events', ...
     'ListSize', [225 100]);
 
+%% Summary statistics?
+
+% Builds yes/no selection box. Yes: sum_stats = 1; No: sum_stats = 2
+sum_stats = listdlg('PromptString', 'Summary statistics?', ...
+    'SelectionMode', 'single', ...
+    'ListString',{'Yes', 'No'}, ...
+    'Name', 'Values at Events', ...
+    'ListSize', [225 100]);
 %% Provide output file names
 
 % 1. Events, maxes, mins, & phases
@@ -398,7 +406,8 @@ if valEvent == 1
 
     % Run eventFinder.m;
     [eventMaster,aveEventMaster] = eventFinder(fileNames,numFiles,...
-        numTrials,numEvents,varRow,eventParams,eventSort,saveFile,saveAveFile);
+        numTrials,numEvents,varRow,eventParams,eventSort,saveFile,...
+        saveAveFile,sum_stats);
 
     % Remove downloaded files from selected directory
     delete eventFinder.m
@@ -424,7 +433,7 @@ if valMax == 1
     
     % Run maxFinder.m;
     [maxMaster, aveMaxMaster] = maxFinder(fileNames,numFiles,numTrials,...
-        numEvents,varRow,saveFile,saveAveFile);
+        numEvents,varRow,saveFile,saveAveFile,sum_stats);
     
     % Remove downloaded files from selected directory
     delete maxFinder.m
@@ -450,7 +459,7 @@ if valMin == 1
     
     % Run mixFinder.m;
     [minMaster, aveMinMaster] = minFinder(fileNames,numFiles,numTrials,...
-        numEvents,varRow,saveFile,saveAveFile);
+        numEvents,varRow,saveFile,saveAveFile,sum_stats);
     
     % Remove downloaded files from selected directory
     delete minFinder.m
@@ -488,12 +497,13 @@ if valPhase == 1
 
     % Run phaseFinder.m
     [phaseMaster, avePhaseMaster] = phaseFinder(fileNames,numFiles,...
-    numTrials,numEvents,varRow,phaseParams,phaseSort,saveFile,saveAveFile);
+    numTrials,numEvents,varRow,phaseParams,phaseSort,saveFile,saveAveFile,...
+    sum_stats);
     
     % Remove downloaded files from selected directory
     delete phaseFinder.m
 end
-%% Build plots (if selected)
+%% Build plots (if selected) (in progress)
 
 if tf == 1 % tf == 1 when user selected at least one variable to plot
        
@@ -521,10 +531,10 @@ end
 
 %% Clean up workspace and display complete message
 delete extractData.m
-% clear ans avefile defEvents defParams dims dlgtitle eventOutFile...
-%     eventSort eventStop maxOutFile minOutFile outputParams path...
-%     phaseOutFile phaseParams phaseSort phaseStop prompt saveAveFile...
-%     saveFile strAveMaster strMaster trialParams tf valEvent valMax valMin...
-%     valPhase
+clear ans avefile defEvents defParams dims dlgtitle eventOutFile...
+    eventSort eventStop maxOutFile minOutFile outputParams path...
+    phaseOutFile phaseParams phaseSort phaseStop prompt saveAveFile...
+    saveFile strAveMaster strMaster trialParams tf valEvent valMax valMin...
+    valPhase
 clc
 disp('the script finished; your quest is over')

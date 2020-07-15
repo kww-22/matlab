@@ -1,5 +1,5 @@
 function [minMaster,aveMinMaster] = minFinder(fileNames,numFiles,...
-    numTrials,numEvents,varRow,saveFile,saveAveFile)
+    numTrials,numEvents,varRow,saveFile,saveAveFile,sum_stats)
 % minFinder: find maximaum values between first and last event
 % *************************************************************************
 % Extracts minimum data values from MotionMonitor .exp exports
@@ -38,6 +38,7 @@ numVars = width(data);
 % directory
 minMaster = array2table(NaN(numFiles,numVars));
 minMaster.Properties.VariableNames = opts.VariableNames;
+minMaster.Properties.VariableTypes = opts.VariableTypes;
 
 %% Populate master table with data from individual trials
 
@@ -77,11 +78,67 @@ end
 
 % Add every nth trial name to the beginning of avemaster
 aveMinMaster = addvars(aveMinMaster,files(1:numTrials:length(files)),'before',1);
-aveMinMaster.Properties.VariableNames = minMaster.Properties.VariableNames;
 
+% Give aveMinMaster the same variable names and properties as minMaster
+aveMinMaster.Properties.VariableNames = minMaster.Properties.VariableNames;
+aveMinMaster.Properties.VariableTypes = minMaster.VariableTypes;
+
+%% Summary statistics?
+if sum_stats == 1
+
+    %% Write summary statistics table for minMaster
+
+    % I don't know what this does but I found it online and it works...
+    varClasses = varfun(@class,minMaster,'OutputFormat','cell');
+
+    % Find elements of varClasses that match "double"
+    numericVars = find(varClasses == "double");
+
+    % Trim eventMaster to only include numeric variables
+    myVars = minMaster(:,numericVars);
+
+    % Compute common descriptive statistics for numeric variables
+    means = mean(myVars{:,:})';
+    std_dev = std(myVars{:,:})';
+    quarts = prctile(myVars{:,:},[25 50 75])';
+
+    % Combine descriptives into one array
+    summary_stats = [means std_dev quarts];
+
+    % Convert descriptive array to table
+    summary_stats = array2table(summary_stats,...
+        'VariableNames',{'mean','std','quart_25','median','quart_75'},...
+        'RowNames', minMaster.Properties.VariableNames(numericVars));
+
+    %% Write Summary Statistics Table for aveMinMaster
+
+    % I don't know what this does but I found it online and it works...
+    varClasses = varfun(@class,aveMinMaster,'OutputFormat','cell');
+
+    % Find elements of varClasses that match "double"
+    numericVars = find(varClasses == "double");
+
+    % Trim eventMaster to only include numeric variables
+    myVars = aveMinMaster(:,numericVars);
+
+    % Compute common descriptive statistics for numeric variables
+    means = mean(myVars{:,:})';
+    std_dev = std(myVars{:,:})';
+    quarts = prctile(myVars{:,:},[25 50 75])';
+
+    % Combine descriptives into one array
+    summary_stats = [means std_dev quarts];
+
+    % Convert descriptive array to table
+    ave_summary_stats = array2table(summary_stats,...
+        'VariableNames',{'mean','std','quart_25','median','quart_75'},...
+        'RowNames', aveMinMaster.Properties.VariableNames(numericVars));
+end
 %% Save minMaster and aveMinMaster with provided file names
 
 writetable(minMaster,saveFile{:});
 writetable(aveMinMaster,saveAveFile{:});
+writetable(summary_stats,'min_sum_stat.csv','WriteRowNames',true);
+writetable(ave_summary_stats,'aveMin_sum_stat.csv','WriteRowNames',true);
 
 end

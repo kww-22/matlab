@@ -1,5 +1,5 @@
 function [eventMaster,aveEventMaster] = eventFinder(fileNames,numFiles,...
-    numTrials,numEvents,varRow,eventParams,eventSort,saveFile,saveAveFile)
+    numTrials,numEvents,varRow,eventParams,eventSort,saveFile,saveAveFile,sum_stats)
 % eventFinder: find values at events
 % *************************************************************************
 % Excracts event data from MotionMonitor .exp exports
@@ -42,6 +42,7 @@ numVars = width(data);
 % directory
 eventMaster = array2table(NaN(numFiles*numEvents,numVars));
 eventMaster.Properties.VariableNames = opts.VariableNames;
+eventMaster.Properties.VariableTypes = opts.VariableTypes;
 
 %% Populate master table with data from individual trials
 
@@ -188,7 +189,10 @@ efiles = repmat(files(1:numTrials:length(files)),[numEvents 1]);
 repevents = repelem(events,numPeeps);
 aveEventMaster = addvars(aveEventMaster,efiles,repevents,'after',2);
 aveEventMaster = removevars(aveEventMaster,[1 2]);
+
+% Give aveEventMaster the same variable names and properties as eventMaster
 aveEventMaster.Properties.VariableNames = eventMaster.Properties.VariableNames;
+aveEventMaster.Properties.VariableTypes = eventMaster.VariableTypes;
 
 eventMaster = renamevars(eventMaster,["efiles" "repevents"],["fileName" "event"]);
 aveEventMaster = renamevars(aveEventMaster,["efiles" "repevents"],["fileName" "event"]);
@@ -203,7 +207,60 @@ end
 
 end
 
+%% Summary statistics?
+if sum_stats == 1
+
+    %% Write summary statistics table for eventMaster
+
+    % I don't know what this does but I found it online and it works...
+    varClasses = varfun(@class,eventMaster,'OutputFormat','cell');
+
+    % Find elements of varClasses that match "double"
+    numericVars = find(varClasses == "double");
+
+    % Trim eventMaster to only include numeric variables
+    myVars = eventMaster(:,numericVars);
+
+    % Compute common descriptive statistics for numeric variables
+    means = mean(myVars{:,:})';
+    std_dev = std(myVars{:,:})';
+    quarts = prctile(myVars{:,:},[25 50 75])';
+
+    % Combine descriptives into one array
+    summary_stats = [means std_dev quarts];
+
+    % Convert descriptive array to table
+    summary_stats = array2table(summary_stats,...
+        'VariableNames',{'mean','std','quart_25','median','quart_75'},...
+        'RowNames', eventMaster.Properties.VariableNames(numericVars));
+
+    %% Write Summary Statistics Table for aveEventMaster
+
+    % I don't know what this does but I found it online and it works...
+    varClasses = varfun(@class,aveEventMaster,'OutputFormat','cell');
+
+    % Find elements of varClasses that match "double"
+    numericVars = find(varClasses == "double");
+
+    % Trim eventMaster to only include numeric variables
+    myVars = aveEventMaster(:,numericVars);
+
+    % Compute common descriptive statistics for numeric variables
+    means = mean(myVars{:,:})';
+    std_dev = std(myVars{:,:})';
+    quarts = prctile(myVars{:,:},[25 50 75])';
+
+    % Combine descriptives into one array
+    summary_stats = [means std_dev quarts];
+
+    % Convert descriptive array to table
+    ave_summary_stats = array2table(summary_stats,...
+        'VariableNames',{'mean','std','quart_25','median','quart_75'},...
+        'RowNames', aveEventMaster.Properties.VariableNames(numericVars));
+end
 %% Save eventMaster and aveEventMaster
 
 writetable(eventMaster,saveFile{:});
 writetable(aveEventMaster,saveAveFile{:});
+writetable(summary_stats,'events_sum_stat.csv','WriteRowNames',true);
+writetable(ave_summary_stats,'aveEvents_sum_stat.csv','WriteRowNames',true);

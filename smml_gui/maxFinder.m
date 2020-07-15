@@ -1,5 +1,5 @@
 function [maxMaster,aveMaxMaster] = maxFinder(fileNames,numFiles,...
-    numTrials,numEvents,varRow,saveFile,saveAveFile)
+    numTrials,numEvents,varRow,saveFile,saveAveFile,sum_stats)
 % maxFinder: find maximaum values between first and last event
 % *************************************************************************
 % Extracts maximum data values from MotionMonitor .exp exports
@@ -38,6 +38,7 @@ numVars = width(data);
 % directory
 maxMaster = array2table(NaN(numFiles,numVars));
 maxMaster.Properties.VariableNames = opts.VariableNames;
+maxMaster.Properties.VariableTypes = opts.VariableTypes;
 
 %% Populate master table with data from individual trials
 
@@ -78,11 +79,66 @@ end
 % Add every nth trial name to the beginning of avemaster
 aveMaxMaster = addvars(aveMaxMaster,files(1:numTrials:length(files)),'before',1);
 aveMaxMaster.Properties.VariableNames = maxMaster.Properties.VariableNames;
+aveMaxMaster.Properties.VariableTypes = maxMaster.VariableTypes;
+
+%% Summary statistics?
+if sum_stats == 1
+
+    %% Write summary statistics table for maxMaster
+
+    % I don't know what this does but I found it online and it works...
+    varClasses = varfun(@class,maxMaster,'OutputFormat','cell');
+
+    % Find elements of varClasses that match "double"
+    numericVars = find(varClasses == "double");
+
+    % Trim eventMaster to only include numeric variables
+    myVars = maxMaster(:,numericVars);
+
+    % Compute common descriptive statistics for numeric variables
+    means = mean(myVars{:,:})';
+    std_dev = std(myVars{:,:})';
+    quarts = prctile(myVars{:,:},[25 50 75])';
+
+    % Combine descriptives into one array
+    summary_stats = [means std_dev quarts];
+
+    % Convert descriptive array to table
+    summary_stats = array2table(summary_stats,...
+        'VariableNames',{'mean','std','quart_25','median','quart_75'},...
+        'RowNames', maxMaster.Properties.VariableNames(numericVars));
+
+    %% Write Summary Statistics Table for aveMaxMaster
+
+    % I don't know what this does but I found it online and it works...
+    varClasses = varfun(@class,aveMaxMaster,'OutputFormat','cell');
+
+    % Find elements of varClasses that match "double"
+    numericVars = find(varClasses == "double");
+
+    % Trim eventMaster to only include numeric variables
+    myVars = aveMaxMaster(:,numericVars);
+
+    % Compute common descriptive statistics for numeric variables
+    means = mean(myVars{:,:})';
+    std_dev = std(myVars{:,:})';
+    quarts = prctile(myVars{:,:},[25 50 75])';
+
+    % Combine descriptives into one array
+    summary_stats = [means std_dev quarts];
+
+    % Convert descriptive array to table
+    ave_summary_stats = array2table(summary_stats,...
+        'VariableNames',{'mean','std','quart_25','median','quart_75'},...
+        'RowNames', aveMaxMaster.Properties.VariableNames(numericVars));
+end
 
 %% Save maxMaster and aveMaxMaster with provided file names
 
 writetable(maxMaster,saveFile{:});
 writetable(aveMaxMaster,saveAveFile{:});
+writetable(summary_stats,'max_sum_stat.csv','WriteRowNames',true);
+writetable(ave_summary_stats,'aveMax_sum_stat.csv','WriteRowNames',true);
 
 end
 

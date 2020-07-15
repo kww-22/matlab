@@ -1,5 +1,5 @@
 function [phaseMaster,avePhaseMaster] = phaseFinder(fileNames,numFiles,...
-    numTrials,numEvents,varRow,phaseParams,phaseSort,saveFile,saveAveFile)
+    numTrials,numEvents,varRow,phaseParams,phaseSort,saveFile,saveAveFile,sum_stats)
 % phaseFinder: find average values across phases
 % *************************************************************************
 % Excracts phase data from MotionMonitor .exp exports
@@ -41,6 +41,7 @@ numVars = width(data);
 % directory
 phaseMaster = array2table(NaN(numFiles*(numEvents-1),numVars));
 phaseMaster.Properties.VariableNames = opts.VariableNames;
+phaseMaster.Properties.VariableTypes = opts.VariableTypes;
 
 %% Populate master table with data from individual trials
 
@@ -152,13 +153,16 @@ aveFileNames = phaseMaster.efiles(pStartRow);
 aveEventNames = phaseMaster.repphases(1:numTrials:height(phaseMaster));
 
 avePhaseMaster = [ave_phase_1_master ; ave_phase_2_master ; ave_phase_3_master ; ave_phase_4_master];
-avePhaseMaster.Properties.VariableNames = phaseMaster.Properties.VariableNames;
+
 avePhaseMaster.repphases = aveEventNames;
 avePhaseMaster.efiles = repmat(aveFileNames,4,1);
 
 phaseMaster = renamevars(phaseMaster,["efiles","repphases","Frame_"],["participant","phase","frame"]);
 avePhaseMaster = renamevars(avePhaseMaster,["efiles","repphases","Frame_"],["participant","phase","frame"]);
 
+% Give avePhaseMaster the same variable names and properties as phaseMaster
+avePhaseMaster.Properties.VariableNames = phaseMaster.Properties.VariableNames;
+avePhaseMaster.Properties.VariableTypes = phaseMaster.VariableTypes;
 %% Sort tables
 
 if phaseSort == 1
@@ -168,10 +172,64 @@ else
     phaseMaster = sortrows(phaseMaster,"participant");
     avePhaseMaster = sortrows(avePhaseMaster,"participant");
 end
+
+%% Summary statistics?
+if sum_stats == 1
+
+    %% Write summary statistics table for phaseMaster
+
+    % I don't know what this does but I found it online and it works...
+    varClasses = varfun(@class,phaseMaster,'OutputFormat','cell');
+
+    % Find elements of varClasses that match "double"
+    numericVars = find(varClasses == "double");
+
+    % Trim eventMaster to only include numeric variables
+    myVars = phaseMaster(:,numericVars);
+
+    % Compute common descriptive statistics for numeric variables
+    means = mean(myVars{:,:})';
+    std_dev = std(myVars{:,:})';
+    quarts = prctile(myVars{:,:},[25 50 75])';
+
+    % Combine descriptives into one array
+    summary_stats = [means std_dev quarts];
+
+    % Convert descriptive array to table
+    summary_stats = array2table(summary_stats,...
+        'VariableNames',{'mean','std','quart_25','median','quart_75'},...
+        'RowNames', phaseMaster.Properties.VariableNames(numericVars));
+
+    %% Write Summary Statistics Table for avePhaseMaster
+
+    % I don't know what this does but I found it online and it works...
+    varClasses = varfun(@class,avePhaseMaster,'OutputFormat','cell');
+
+    % Find elements of varClasses that match "double"
+    numericVars = find(varClasses == "double");
+
+    % Trim eventMaster to only include numeric variables
+    myVars = avePhaseMaster(:,numericVars);
+
+    % Compute common descriptive statistics for numeric variables
+    means = mean(myVars{:,:})';
+    std_dev = std(myVars{:,:})';
+    quarts = prctile(myVars{:,:},[25 50 75])';
+
+    % Combine descriptives into one array
+    summary_stats = [means std_dev quarts];
+
+    % Convert descriptive array to table
+    ave_summary_stats = array2table(summary_stats,...
+        'VariableNames',{'mean','std','quart_25','median','quart_75'},...
+        'RowNames', avePhaseMaster.Properties.VariableNames(numericVars));
+end
 %% Save phaseMaster and avePhaseMaster
 
 writetable(phaseMaster,saveFile{:});
 writetable(avePhaseMaster,saveAveFile{:});
+writetable(summary_stats,'phase_sum_stat.csv','WriteRowNames',true);
+writetable(ave_summary_stats,'avePhase_sum_stat.csv','WriteRowNames',true);
 
 end
 
