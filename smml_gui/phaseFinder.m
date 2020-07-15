@@ -149,19 +149,17 @@ elseif numEvents == 5
     end
 end
 %% Combine individual phase masters into grand phase master
-aveFileNames = phaseMaster.efiles(pStartRow);
-aveEventNames = phaseMaster.repphases(1:numTrials:height(phaseMaster));
+aveFileNames = phaseMaster.participant(pStartRow);
+aveEventNames = phaseMaster.phase(1:numTrials:height(phaseMaster));
 
 avePhaseMaster = [ave_phase_1_master ; ave_phase_2_master ; ave_phase_3_master ; ave_phase_4_master];
 
-avePhaseMaster.repphases = aveEventNames;
-avePhaseMaster.efiles = repmat(aveFileNames,4,1);
-
-phaseMaster = renamevars(phaseMaster,["efiles","repphases","Frame_"],["participant","phase","frame"]);
-avePhaseMaster = renamevars(avePhaseMaster,["efiles","repphases","Frame_"],["participant","phase","frame"]);
 
 % Give avePhaseMaster the same variable names and properties as phaseMaster
 avePhaseMaster.Properties.VariableNames = phaseMaster.Properties.VariableNames;
+
+avePhaseMaster.phase = aveEventNames;
+avePhaseMaster.participant = repmat(aveFileNames,4,1);
 
 %% Sort tables
 
