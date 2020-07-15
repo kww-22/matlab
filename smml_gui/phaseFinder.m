@@ -180,7 +180,7 @@ if sum_stats == 1
 
     % I don't know what this does but I found it online and it get the
     % variable types for each table column
-    varTypes = varfun(@class,eventMaster,'OutputFormat','cell');
+    varTypes = varfun(@class,phaseMaster,'OutputFormat','cell');
     
     % Find elements of varClasses that match "double"
     numericVars = find(varTypes == "double");
