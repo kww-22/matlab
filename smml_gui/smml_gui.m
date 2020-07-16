@@ -7,7 +7,8 @@
 %       2. Min of variables btwn first & last event
 %       3. Values of variables @ events
 %       4. Average value of variables between events (over phases)
-%       5. Plot time series for variables of interest (in progress)
+%       5. Plot time series for variables of interest (in progress; works
+%       but is suuuuuuper slow; needs work!)
 %       6. Basic summary statistics (mean; standard deviation; 25th, 50th,
 %       and 75th percentiles)
 %
@@ -357,10 +358,69 @@ if valPhase == 1
             error('phase abbreviations were not defined');
         end
 end
-%% Ask for plots
+
+%% Plots?
 
 websave('extractData.m',...
     'https://raw.githubusercontent.com/kww-22/matlab/master/extractData.m');
+
+% Extract first file in directory and it's import options
+data = extractData(fileNames.fileNames{1},'text',varRow);
+opts = detectImportOptions(fileNames.fileNames{1},'FileType','text');
+
+% Get variable names for selection dialog
+varNames = opts.VariableNames;
+clear opts
+
+list = string(varNames);
+
+% Dialog box to select which variables user would like plotted
+[indx,tf] = listdlg('ListString',list,...
+    'PromptString','Would you like any time-series plots?',...
+    'CancelString','No thanks',...
+    'ListSize',[200 300]);
+
+if valEvent == 2
+    
+    if numEvents == 3
+        prompt = {'Event 1 abbreviation'...
+            'Event 2 abbreviation'...
+            'Event 3 abbreviation'};
+        dlgtitle = 'Event Abbreviations';
+        dims = [1 45];
+        defEvents = {'e1','e2','e3'};
+        eventParams = inputdlg(prompt,dlgtitle,dims,defEvents);
+        
+    elseif numEvents == 4
+        prompt = {'Event 1 abbreviation'...
+            'Event 2 abbreviation'...
+            'Event 3 abbreviation'...
+            'Event 4 abbreviation'};
+        dlgtitle = 'Event Abbreviations';
+        dims = [1 45];
+        defEvents = {'e1','e2','e3','e4'};
+        eventParams = inputdlg(prompt,dlgtitle,dims,defEvents);
+        
+    elseif numEvents == 5
+        prompt = {'Event 1 abbreviation'...
+            'Event 2 abbreviation'...
+            'Event 3 abbreviation'...
+            'Event 4 abbreviation'...
+            'Event 5 abbreviation'};
+        dlgtitle = 'Event Abbreviations';
+        dims = [1 45];
+        defEvents = {'e1','e2','e3','e4','e5'};
+        eventParams = inputdlg(prompt,dlgtitle,dims,defEvents);
+    end
+    
+        % Script stopper if cancel button is selected when defining
+        % event abbreviations
+        eventStop = size(eventParams);
+        
+        if eventStop == 0
+            error('event abbreviations were not defined');
+        end
+end
 %% Run eventFinder if selected
 
 if valEvent == 1
@@ -491,45 +551,74 @@ if valPhase == 1
     delete phaseFinder.m
 end
 
-%% Plots?
-
-% Extract first file in directory and it's import options
-data = extractData(fileNames.fileNames{1},'text',varRow);
-opts = detectImportOptions(fileNames.fileNames{1},'FileType','text');
-
-% Get variable names for selection dialog
-varNames = opts.VariableNames;
-clear opts
-
-list = string(varNames);
-
-% Dialog box to select which variables user would like plotted
-[indx,tf] = listdlg('ListString',list,...
-    'PromptString','Would you like any time-series plots?',...
-    'CancelString','No thanks',...
-    'ListSize',[200 300]);
-
-% Build plots (if selected) (in progress)
+%% Build plots (if selected) (in progress)
 
 if tf == 1 % tf == 1 when user selected at least one variable to plot
-       
+    
+    list = string(eventParams);
+
+    % Dialog box to select which variables user would like plotted
+    e_start = listdlg('ListString',list,...
+    'PromptString','Plot start event?',...
+    'CancelString','Nevermind',...
+    'ListSize',[200 300],...
+    'SelectionMode','single');
+
+    % Dialog box to select which variables user would like plotted
+    e_stop = listdlg('ListString',list,...
+    'PromptString','Plot start event?',...
+    'CancelString','Nevermind',...
+    'ListSize',[200 300],...
+    'SelectionMode','single');
+    
     % get number of requested plots from dialog box
     numPlots = length(indx);
+    
     % initialize figure window
     figure('color','w');
     
-    if numPlots / 3 <= 1
-        for i = 1:numPlots
-        subplot(1,numPlots,i)
-        plot(data{:,indx});
-        yline(0,'LineWidth',2)
-        end
-    else
-        for i = 1:numPlots
-        hold on
-        subplot(ceil(numPlots/3),3,i)
-        plot(data{:,indx(i)});
-        yline(0,'LineWidth',2)
+    for i = 1:numFiles
+        data = extractData(fileNames.fileNames{i},'text',9);
+        
+        % get sample frequency from .txt file
+        txt = textscan(fopen(fileNames.fileNames{i}), '%q','Delimiter','//');
+        txt = txt{1};
+        fs  = str2double(txt{10});
+        clear txt
+        
+        % find event indices and trim data
+        events = find(data.VEM_0 == 1);
+        data = data(events(e_start):events(e_stop),:);
+        
+        % Create original time axis
+        time_old = (0:size(data)-1)'/fs;
+
+        % Normalize original time axis
+        time_old = time_old/time_old(end);
+
+        % Create new time axis for interpolation
+        time = linspace(time_old(1),time_old(end),100);
+
+    
+        % sets up and plots selected variables in a 3 x n plotting space
+        if numPlots / 3 <= 1
+            for j = 1:numPlots
+            hold on
+            interp = interp1(time_old,data{:,indx(j)},time,'spline');
+            subplot(1,numPlots,j)
+            plot(time,interp);
+            title(varNames{indx(j)})
+            yline(0,'LineWidth',2)
+            end
+        else
+            for j = 1:numPlots
+            hold on
+            interp = interp1(time_old,data{:,indx(j)},time,'spline');
+            subplot(ceil(numPlots/3),3,j)
+            plot(time,interp);
+            title(varNames{indx(j)})
+            yline(0,'LineWidth',2);
+            end
         end
     end
 end
@@ -537,10 +626,10 @@ end
 
 %% Clean up workspace and display complete message
 delete extractData.m
-clear ans avefile data defEvents defParams dims dlgtitle eventOutFile...
-    eventParams eventSort eventStop indx list maxOutFile minOutFile...
-    outputParams path phaseOutFile phaseParams phaseSort phaseStop prompt...
-    saveAveFile saveFile strAveMaster strMaster sum_stats trialParams tf...
-    valEvent valMax valMin valPhase
+% clear ans avefile data defEvents defParams dims dlgtitle eventOutFile...
+%     eventParams eventSort eventStop indx list maxOutFile minOutFile...
+%     outputParams path phaseOutFile phaseParams phaseSort phaseStop prompt...
+%     saveAveFile saveFile strAveMaster strMaster sum_stats trialParams tf...
+%     valEvent valMax valMin valPhase
 clc
 disp('the script finished; your quest is over')
