@@ -380,7 +380,7 @@ list = string(varNames);
     'CancelString','No thanks',...
     'ListSize',[200 300]);
 
-if valEvent == 2
+if valEvent == 2 && tf == 1
     
     if numEvents == 3
         prompt = {'Event 1 abbreviation'...
