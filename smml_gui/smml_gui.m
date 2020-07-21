@@ -30,6 +30,9 @@
 % *************************************************************************
 %% Gather directory information
 
+clear
+clc
+
 % Set directory
 % Choose folder path containing exported and necessary matlab files
 path = uigetdir('Navigate to the folder containing MotionMonitor Exports');
