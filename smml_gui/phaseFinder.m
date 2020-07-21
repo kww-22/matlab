@@ -150,33 +150,37 @@ elseif numEvents == 5
 end
 %% Combine individual phase masters into grand phase master
 
+% rename poorly named variables
 phaseMaster = renamevars(phaseMaster,["efiles","repphases","Frame_"],...
 ["participant","phase","frame"]);
 
+
 aveFileNames = phaseMaster.participant(pStartRow);
-aveEventNames = phaseMaster.phase(1:numTrials:height(phaseMaster));
+avePhaseNames = phaseMaster.phase(1:numTrials:height(phaseMaster));
 
-if numEvents == 5
-    avePhaseMaster = [ave_phase_1_master ; ave_phase_2_master ; ave_phase_3_master ; ave_phase_4_master];
-
+% compile
+if numEvents == 3
+    avePhaseMaster = [ave_phase_1_master ; ave_phase_2_master];
 elseif numEvents == 4
     avePhaseMaster = [ave_phase_1_master ; ave_phase_2_master ; ave_phase_3_master];
-    
-elseif numEvents == 3
-    avePhaseMaster = [ave_phase_1_master ; ave_phase_2_master];
+elseif numEvents == 5
+    avePhaseMaster = [ave_phase_1_master ; ave_phase_2_master ; ave_phase_3_master ; ave_phase_4_master];
+end
     
 
 % Give avePhaseMaster the same variable names and properties as phaseMaster
 avePhaseMaster.Properties.VariableNames = phaseMaster.Properties.VariableNames;
 
-avePhaseMaster.phase = aveEventNames;
+avePhaseMaster.phase = avePhaseNames;
 
-if numEvents == 5
-    avePhaseMaster.participant = repmat(aveFileNames,4,1);
+%
+if numEvents == 3
+    avePhaseMaster.participant = repmat(aveFileNames,2,1);
 elseif numEvents == 4
     avePhaseMaster.participant = repmat(aveFileNames,3,1);
-elseif numEvents == 3
-    avePhaseMaster.participant = repmat(aveFileNames,2,1);
+elseif numEvents == 5
+    avePhaseMaster.participant = repmat(aveFileNames,4,1);
+end
 
 %% Sort tables
 
