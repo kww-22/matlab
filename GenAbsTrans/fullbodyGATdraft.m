@@ -29,210 +29,211 @@ websave('extractData.m',...
 
 
 %% filter to only 240 Hz files
-files240 = nan(numFiles,1);
-
-for i = 1:numFiles
-    txt = textscan(fopen(fileNames.fileNames{i}), '%q','Delimiter','//');
-    txt = txt{1};
-    fs  = str2double(txt{10});
-    clear txt
-    if fs > 200
-        files240(i) = 1;
-    else
-        files240(i) = 0;
-    end
-end
-fclose('all');
-fileNames240 = fileNames.fileNames(files240 == 1,:);
-numFiles240 = length(fileNames240);
+% files240 = nan(numFiles,1);
+% 
+% for i = 1:numFiles
+%     txt = textscan(fopen(fileNames.fileNames{i}), '%q','Delimiter','//');
+%     txt = txt{1};
+%     fs  = str2double(txt{10});
+%     clear txt
+%     if fs > 200
+%         files240(i) = 1;
+%     else
+%         files240(i) = 0;
+%     end
+% end
+% fclose('all');
+% fileNames240 = fileNames.fileNames(files240 == 1,:);
+% numFiles240 = length(fileNames240);
 
 %% preallocate variable arrays
 
 % event timing master arrays
-sfc_time = nan(numFiles240,1);
-mer_time = nan(numFiles240,1);
-br_time = nan(numFiles240,1);
-mir_time = nan(numFiles240,1);
+sfc_time = nan(numFiles,1);
+mer_time = nan(numFiles,1);
+br_time = nan(numFiles,1);
+mir_time = nan(numFiles,1);
 
-bodyheight = nan(numFiles240,1);
-bodymass = nan(numFiles240,1);
+bodyheight = nan(numFiles,1);
+bodymass = nan(numFiles,1);
+measRate = nan(numFiles,1);
 
 % total energy gen/abs/trans over phases of interest master arrays
     % back knee
-    Bknee_trns_sp = nan(numFiles240,1);
-    Bknee_trns_cp = nan(numFiles240,1);
-    Bknee_trns_ap = nan(numFiles240,1);
+    Bknee_trns_sp = nan(numFiles,1);
+    Bknee_trns_cp = nan(numFiles,1);
+    Bknee_trns_ap = nan(numFiles,1);
 
-    Bknee_gen_sp = nan(numFiles240,1);
-    Bknee_gen_cp = nan(numFiles240,1);
-    Bknee_gen_ap = nan(numFiles240,1);
+    Bknee_gen_sp = nan(numFiles,1);
+    Bknee_gen_cp = nan(numFiles,1);
+    Bknee_gen_ap = nan(numFiles,1);
 
-    Bknee_abs_sp = nan(numFiles240,1);
-    Bknee_abs_cp = nan(numFiles240,1);
-    Bknee_abs_ap = nan(numFiles240,1);
+    Bknee_abs_sp = nan(numFiles,1);
+    Bknee_abs_cp = nan(numFiles,1);
+    Bknee_abs_ap = nan(numFiles,1);
 
     % front knee
-    Fknee_trns_sp = nan(numFiles240,1);
-    Fknee_trns_cp = nan(numFiles240,1);
-    Fknee_trns_ap = nan(numFiles240,1);
+    Fknee_trns_sp = nan(numFiles,1);
+    Fknee_trns_cp = nan(numFiles,1);
+    Fknee_trns_ap = nan(numFiles,1);
 
-    Fknee_gen_sp = nan(numFiles240,1);
-    Fknee_gen_cp = nan(numFiles240,1);
-    Fknee_gen_ap = nan(numFiles240,1);
+    Fknee_gen_sp = nan(numFiles,1);
+    Fknee_gen_cp = nan(numFiles,1);
+    Fknee_gen_ap = nan(numFiles,1);
 
-    Fknee_abs_sp = nan(numFiles240,1);
-    Fknee_abs_cp = nan(numFiles240,1);
-    Fknee_abs_ap = nan(numFiles240,1);
+    Fknee_abs_sp = nan(numFiles,1);
+    Fknee_abs_cp = nan(numFiles,1);
+    Fknee_abs_ap = nan(numFiles,1);
     
     % back hip
-    Bhip_trns_sp = nan(numFiles240,1);
-    Bhip_trns_cp = nan(numFiles240,1);
-    Bhip_trns_ap = nan(numFiles240,1);
+    Bhip_trns_sp = nan(numFiles,1);
+    Bhip_trns_cp = nan(numFiles,1);
+    Bhip_trns_ap = nan(numFiles,1);
 
-    Bhip_gen_sp = nan(numFiles240,1);
-    Bhip_gen_cp = nan(numFiles240,1);
-    Bhip_gen_ap = nan(numFiles240,1);
+    Bhip_gen_sp = nan(numFiles,1);
+    Bhip_gen_cp = nan(numFiles,1);
+    Bhip_gen_ap = nan(numFiles,1);
 
-    Bhip_abs_sp = nan(numFiles240,1);
-    Bhip_abs_cp = nan(numFiles240,1);
-    Bhip_abs_ap = nan(numFiles240,1);
+    Bhip_abs_sp = nan(numFiles,1);
+    Bhip_abs_cp = nan(numFiles,1);
+    Bhip_abs_ap = nan(numFiles,1);
     
     % front hip
-    Fhip_trns_sp = nan(numFiles240,1);
-    Fhip_trns_cp = nan(numFiles240,1);
-    Fhip_trns_ap = nan(numFiles240,1);
+    Fhip_trns_sp = nan(numFiles,1);
+    Fhip_trns_cp = nan(numFiles,1);
+    Fhip_trns_ap = nan(numFiles,1);
 
-    Fhip_gen_sp = nan(numFiles240,1);
-    Fhip_gen_cp = nan(numFiles240,1);
-    Fhip_gen_ap = nan(numFiles240,1);
+    Fhip_gen_sp = nan(numFiles,1);
+    Fhip_gen_cp = nan(numFiles,1);
+    Fhip_gen_ap = nan(numFiles,1);
 
-    Fhip_abs_sp = nan(numFiles240,1);
-    Fhip_abs_cp = nan(numFiles240,1);
-    Fhip_abs_ap = nan(numFiles240,1);
+    Fhip_abs_sp = nan(numFiles,1);
+    Fhip_abs_cp = nan(numFiles,1);
+    Fhip_abs_ap = nan(numFiles,1);
     
     % thorax-pelvis
     
-    PelvThor_trns_sp = nan(numFiles240,1);
-    PelvThor_trns_cp = nan(numFiles240,1);
-    PelvThor_trns_ap = nan(numFiles240,1);
+    PelvThor_trns_sp = nan(numFiles,1);
+    PelvThor_trns_cp = nan(numFiles,1);
+    PelvThor_trns_ap = nan(numFiles,1);
 
-    PelvThor_gen_sp = nan(numFiles240,1);
-    PelvThor_gen_cp = nan(numFiles240,1);
-    PelvThor_gen_ap = nan(numFiles240,1);
+    PelvThor_gen_sp = nan(numFiles,1);
+    PelvThor_gen_cp = nan(numFiles,1);
+    PelvThor_gen_ap = nan(numFiles,1);
 
-    PelvThor_abs_sp = nan(numFiles240,1);
-    PelvThor_abs_cp = nan(numFiles240,1);
-    PelvThor_abs_ap = nan(numFiles240,1);
+    PelvThor_abs_sp = nan(numFiles,1);
+    PelvThor_abs_cp = nan(numFiles,1);
+    PelvThor_abs_ap = nan(numFiles,1);
 
     % shoulder
-    shldr_trns_cp = nan(numFiles240,1);
-    shldr_trns_ap = nan(numFiles240,1);
-    shldr_trns_dp = nan(numFiles240,1);
+    shldr_trns_cp = nan(numFiles,1);
+    shldr_trns_ap = nan(numFiles,1);
+    shldr_trns_dp = nan(numFiles,1);
 
-    shldr_gen_cp = nan(numFiles240,1);
-    shldr_gen_ap = nan(numFiles240,1);
-    shldr_gen_dp = nan(numFiles240,1);
+    shldr_gen_cp = nan(numFiles,1);
+    shldr_gen_ap = nan(numFiles,1);
+    shldr_gen_dp = nan(numFiles,1);
 
-    shldr_abs_cp = nan(numFiles240,1);
-    shldr_abs_ap = nan(numFiles240,1);
-    shldr_abs_dp = nan(numFiles240,1);
+    shldr_abs_cp = nan(numFiles,1);
+    shldr_abs_ap = nan(numFiles,1);
+    shldr_abs_dp = nan(numFiles,1);
     
     % elbow
-    elb_trns_cp = nan(numFiles240,1);
-    elb_trns_ap = nan(numFiles240,1);
-    elb_trns_dp =nan(numFiles240,1);
+    elb_trns_cp = nan(numFiles,1);
+    elb_trns_ap = nan(numFiles,1);
+    elb_trns_dp =nan(numFiles,1);
 
-    elb_gen_cp = nan(numFiles240,1);
-    elb_gen_ap = nan(numFiles240,1);
-    elb_gen_dp = nan(numFiles240,1);
+    elb_gen_cp = nan(numFiles,1);
+    elb_gen_ap = nan(numFiles,1);
+    elb_gen_dp = nan(numFiles,1);
 
-    elb_abs_cp = nan(numFiles240,1);
-    elb_abs_ap = nan(numFiles240,1);
-    elb_abs_dp = nan(numFiles240,1);
+    elb_abs_cp = nan(numFiles,1);
+    elb_abs_ap = nan(numFiles,1);
+    elb_abs_dp = nan(numFiles,1);
 
 % joint gen/abs/trans interpolation masters for plotting
-Bknee_gen = nan(numFiles240,100);
-Bknee_trns = nan(numFiles240,100);
+Bknee_gen = nan(numFiles,100);
+Bknee_trns = nan(numFiles,100);
 
-Bhip_gen = nan(numFiles240,100);
-Bhip_trns = nan(numFiles240,100);
+Bhip_gen = nan(numFiles,100);
+Bhip_trns = nan(numFiles,100);
 
-Fknee_gen = nan(numFiles240,100);
-Fknee_trns = nan(numFiles240,100);
+Fknee_gen = nan(numFiles,100);
+Fknee_trns = nan(numFiles,100);
 
-Fhip_trns = nan(numFiles240,100);
-Fhip_gen = nan(numFiles240,100);
+Fhip_trns = nan(numFiles,100);
+Fhip_gen = nan(numFiles,100);
 
-PelvThor_trns = nan(numFiles240,100);
-PelvThor_gen = nan(numFiles240,100);
+PelvThor_trns = nan(numFiles,100);
+PelvThor_gen = nan(numFiles,100);
 
-Shldr_trns = nan(numFiles240,100);
-Shldr_gen = nan(numFiles240,100);
+Shldr_trns = nan(numFiles,100);
+Shldr_gen = nan(numFiles,100);
 
-Elb_trns = nan(numFiles240,100);
-Elb_gen = nan(numFiles240,100);
+Elb_trns = nan(numFiles,100);
+Elb_gen = nan(numFiles,100);
 
 % peak rates of gen/abs/trans
-pBknee_gen = nan(numFiles240,1);
-pBknee_abs = nan(numFiles240,1);
-pBknee_trns = nan(numFiles240,1);
+pBknee_gen = nan(numFiles,1);
+pBknee_abs = nan(numFiles,1);
+pBknee_trns = nan(numFiles,1);
 
-pBhip_gen = nan(numFiles240,1);
-pBhip_abs = nan(numFiles240,1);
-pBhip_trns = nan(numFiles240,1);
+pBhip_gen = nan(numFiles,1);
+pBhip_abs = nan(numFiles,1);
+pBhip_trns = nan(numFiles,1);
 
-pFknee_gen = nan(numFiles240,1);
-pFknee_abs = nan(numFiles240,1);
-pFknee_trns = nan(numFiles240,1);
+pFknee_gen = nan(numFiles,1);
+pFknee_abs = nan(numFiles,1);
+pFknee_trns = nan(numFiles,1);
 
-pFhip_trns = nan(numFiles240,1);
-pFhip_abs = nan(numFiles240,1);
-pFhip_gen = nan(numFiles240,1);
+pFhip_trns = nan(numFiles,1);
+pFhip_abs = nan(numFiles,1);
+pFhip_gen = nan(numFiles,1);
 
-pPelvThor_trns = nan(numFiles240,1);
-pPelvThor_abs = nan(numFiles240,1);
-pPelvThor_gen = nan(numFiles240,1);
+pPelvThor_trns = nan(numFiles,1);
+pPelvThor_abs = nan(numFiles,1);
+pPelvThor_gen = nan(numFiles,1);
 
-pShldr_trns = nan(numFiles240,1);
-pShldr_abs = nan(numFiles240,1);
-pShldr_gen = nan(numFiles240,1);
+pShldr_trns = nan(numFiles,1);
+pShldr_abs = nan(numFiles,1);
+pShldr_gen = nan(numFiles,1);
 
-pElb_trns = nan(numFiles240,1);
-pElb_abs = nan(numFiles240,1);
-pElb_gen = nan(numFiles240,1);
+pElb_trns = nan(numFiles,1);
+pElb_abs = nan(numFiles,1);
+pElb_gen = nan(numFiles,1);
 
 % segment power interpolated masters for plotting
 % back shank (proximal = ankle; distal = knee)
-% Bshk_spP_master = nan(numFiles240,100);
-% Bshk_spD_master =  nan(numFiles240,100);
-% Bshk_sp_master =  nan(numFiles240,100);
+% Bshk_spP_master = nan(numFiles,100);
+% Bshk_spD_master =  nan(numFiles,100);
+% Bshk_sp_master =  nan(numFiles,100);
 % 
 % % front shank (proximal = ankle; distal = knee)
-% Fshk_spP_master = nan(numFiles240,100);
-% Fshk_spD_master = nan(numFiles240,100);
-% Fshk_sp_master = nan(numFiles240,100);
+% Fshk_spP_master = nan(numFiles,100);
+% Fshk_spD_master = nan(numFiles,100);
+% Fshk_sp_master = nan(numFiles,100);
 % 
 % % back thigh (proximal = knee; distal = hip)
-% Bthi_spP_master =  nan(numFiles240,100);
-% Bthi_spD_master = nan(numFiles240,100);
-% Bthi_sp_master = nan(numFiles240,100);
+% Bthi_spP_master =  nan(numFiles,100);
+% Bthi_spD_master = nan(numFiles,100);
+% Bthi_sp_master = nan(numFiles,100);
 % 
 % % front thigh (proximal = knee; distal = hip)
-% Fthi_spP_master = nan(numFiles240,100);
-% Fthi_spD_master = nan(numFiles240,100);
-% Fthi_sp_master = nan(numFiles240,100);
+% Fthi_spP_master = nan(numFiles,100);
+% Fthi_spD_master = nan(numFiles,100);
+% Fthi_sp_master = nan(numFiles,100);
 % 
 % % pelvis (proximal = back & front hips; distal = thorax)
-% pelv_spBhip_master = nan(numFiles240,100);
-% pelv_spFhip_master = nan(numFiles240,100);
-% pelv_spThor_master = nan(numFiles240,100);
-% pelv_sp_master = nan(numFiles240,100);
+% pelv_spBhip_master = nan(numFiles,100);
+% pelv_spFhip_master = nan(numFiles,100);
+% pelv_spThor_master = nan(numFiles,100);
+% pelv_sp_master = nan(numFiles,100);
 
 %%
-for i = 1:numFiles240
+for i = 1:numFiles
     %% get sampling frequency
 
-    txt = textscan(fopen(fileNames240{i}), '%q','Delimiter','//');
+    txt = textscan(fopen(fileNames.fileNames{i}), '%q','Delimiter','//');
         txt = txt{1};
         fs  = str2double(txt{10});
         clear txt
@@ -240,36 +241,37 @@ for i = 1:numFiles240
 %% read in data, trim trial, and find events
     
     % load i-th file from directory
-    data = extractData(fileNames240{i},'text',9);
+    data = extractData(fileNames.fileNames{i},'text',9);
     
     % get height & weight
     bodyheight(i,1) = data.BodyHeight(1);
     bodymass(i,1) = data.BodyMass(1);
+    measRate(i,1) = fs;
     
     % find event indices
     events = find(data.VEM_0 == 1);
     
     % trim data to only include rows between pkh & mir
-    data = data(events(1):events(5)+24,:);
+    data = data(events(2):events(5)+round(fs*.1),:);
     
     % redefine and label event indices
     events = find(data.VEM_0 == 1);
-    pkh = events(1);    % Peak knee height
-    sfc = events(2);    % Stride foot contact
-    mer = events(3);    % Max external rotation
-    br = events(4);     % Ball release
-    mir = events(5);    % Max internal rotation
+%     pkh = events(1);    % Peak knee height
+    sfc = events(1);    % Stride foot contact
+    mer = events(2);    % Max external rotation
+    br = events(3);     % Ball release
+    mir = events(4);    % Max internal rotation
     
     % event timing as a % between pkh and mir
-    sfc_time(i,1) = (sfc - pkh)/(mir+24-pkh);
-    mer_time(i,1) = (mer - pkh)/(mir+24-pkh);
-    br_time(i,1) = (br - pkh)/(mir+24-pkh);
-    mir_time(i,1) = (mir - pkh)/(mir+24-pkh);
+%     sfc_time(i,1) = (sfc - pkh)/(height(data)-pkh);
+%     mer_time(i,1) = (mer - pkh)/(height(data)-pkh);
+%     br_time(i,1) = (br - pkh)/(height(data)-pkh);
+%     mir_time(i,1) = (mir - pkh)/(height(data)-pkh);
     
     % event timing as a % between sfc and mir
-%     mer_time(i,1) = (mer - sfc)/(mir+25-sfc);
-%     br_time(i,1) = (br - sfc)/(mir+25-sfc);
-%     mir_time(i,1) = (mir - sfc)/(mir+25-sfc);
+    mer_time(i,1) = (mer - sfc)/(height(data)-sfc);
+    br_time(i,1) = (br - sfc)/(height(data)-sfc);
+    mir_time(i,1) = (mir - sfc)/(height(data)-sfc);
 %% new times for interpolation
     % Create original time axis
     time_old = (0:size(data)-1)'/fs;
@@ -369,15 +371,15 @@ for i = 1:numFiles240
     Bknee_trns(i,:) = interp1(time_old, Bknee_trans_net, time, 'spline');
     Bknee_gen(i,:) = interp1(time_old, Bknee_pwrgen_stp, time, 'spline');
     
-    Bknee_trns_sp(i,1) = trapz(Bknee_trans_net(pkh:sfc)) / fs;
+    %Bknee_trns_sp(i,1) = trapz(Bknee_trans_net(pkh:sfc)) / fs;
     Bknee_trns_cp(i,1) = trapz(Bknee_trans_net(sfc:mer)) / fs;
     Bknee_trns_ap(i,1) = trapz(Bknee_trans_net(mer:br)) / fs;
     
-    Bknee_gen_sp(i,1) = (trapz(Bknee_pwrgen_stp(pkh:sfc)) + trapz(abs(Bknee_pwrgen_stp(pkh:sfc)))) / (2 * fs);
+    %Bknee_gen_sp(i,1) = (trapz(Bknee_pwrgen_stp(pkh:sfc)) + trapz(abs(Bknee_pwrgen_stp(pkh:sfc)))) / (2 * fs);
     Bknee_gen_cp(i,1) = (trapz(Bknee_pwrgen_stp(sfc:mer)) + trapz(abs(Bknee_pwrgen_stp(sfc:mer)))) / (2 * fs);
     Bknee_gen_ap(i,1) = (trapz(Bknee_pwrgen_stp(mer:br)) + trapz(abs(Bknee_pwrgen_stp(mer:br)))) / (2 * fs);
     
-    Bknee_abs_sp(i,1) = (trapz(Bknee_pwrgen_stp(pkh:sfc)) - trapz(abs(Bknee_pwrgen_stp(pkh:sfc)))) / (2 * fs);
+    %Bknee_abs_sp(i,1) = (trapz(Bknee_pwrgen_stp(pkh:sfc)) - trapz(abs(Bknee_pwrgen_stp(pkh:sfc)))) / (2 * fs);
     Bknee_abs_cp(i,1) = (trapz(Bknee_pwrgen_stp(sfc:mer)) - trapz(abs(Bknee_pwrgen_stp(sfc:mer)))) / (2 * fs);
     Bknee_abs_ap(i,1) = (trapz(Bknee_pwrgen_stp(mer:br)) - trapz(abs(Bknee_pwrgen_stp(mer:br)))) / (2 * fs);
     
@@ -428,15 +430,15 @@ for i = 1:numFiles240
     Fknee_trns(i,:) = interp1(time_old, Fknee_trans_net, time, 'spline');
     Fknee_gen(i,:) = interp1(time_old, Fknee_pwrgen_stp, time, 'spline');
     
-    Fknee_trns_sp(i,1) = trapz(Fknee_trans_net(pkh:sfc)) / fs;
+    %Fknee_trns_sp(i,1) = trapz(Fknee_trans_net(pkh:sfc)) / fs;
     Fknee_trns_cp(i,1) = trapz(Fknee_trans_net(sfc:mer)) / fs;
     Fknee_trns_ap(i,1) = trapz(Fknee_trans_net(mer:br)) / fs;
     
-    Fknee_gen_sp(i,1) = (trapz(Fknee_pwrgen_stp(pkh:sfc)) + trapz(abs(Fknee_pwrgen_stp(pkh:sfc)))) / (2 * fs);
+    %Fknee_gen_sp(i,1) = (trapz(Fknee_pwrgen_stp(pkh:sfc)) + trapz(abs(Fknee_pwrgen_stp(pkh:sfc)))) / (2 * fs);
     Fknee_gen_cp(i,1) = (trapz(Fknee_pwrgen_stp(sfc:mer)) + trapz(abs(Fknee_pwrgen_stp(sfc:mer)))) / (2 * fs);
     Fknee_gen_ap(i,1) = (trapz(Fknee_pwrgen_stp(mer:br)) + trapz(abs(Fknee_pwrgen_stp(mer:br)))) / (2 * fs);
     
-    Fknee_abs_sp(i,1) = (trapz(Fknee_pwrgen_stp(pkh:sfc)) - trapz(abs(Fknee_pwrgen_stp(pkh:sfc)))) / (2 * fs);
+    %Fknee_abs_sp(i,1) = (trapz(Fknee_pwrgen_stp(pkh:sfc)) - trapz(abs(Fknee_pwrgen_stp(pkh:sfc)))) / (2 * fs);
     Fknee_abs_cp(i,1) = (trapz(Fknee_pwrgen_stp(sfc:mer)) - trapz(abs(Fknee_pwrgen_stp(sfc:mer)))) / (2 * fs);
     Fknee_abs_ap(i,1) = (trapz(Fknee_pwrgen_stp(mer:br)) - trapz(abs(Fknee_pwrgen_stp(mer:br)))) / (2 * fs);
     
@@ -487,15 +489,15 @@ for i = 1:numFiles240
     Bhip_trns(i,:) = interp1(time_old, Bhip_trans_net, time, 'spline');
     Bhip_gen(i,:) = interp1(time_old, Bhip_pwrgen_stp, time, 'spline');
     
-    Bhip_trns_sp(i,1) = trapz(Bhip_trans_net(pkh:sfc)) / fs;
+    %Bhip_trns_sp(i,1) = trapz(Bhip_trans_net(pkh:sfc)) / fs;
     Bhip_trns_cp(i,1) = trapz(Bhip_trans_net(sfc:mer)) / fs;
     Bhip_trns_ap(i,1) = trapz(Bhip_trans_net(mer:br)) / fs;
     
-    Bhip_gen_sp(i,1) = (trapz(Bhip_pwrgen_stp(pkh:sfc)) + trapz(abs(Bhip_pwrgen_stp(pkh:sfc)))) / (2 * fs);
+    %Bhip_gen_sp(i,1) = (trapz(Bhip_pwrgen_stp(pkh:sfc)) + trapz(abs(Bhip_pwrgen_stp(pkh:sfc)))) / (2 * fs);
     Bhip_gen_cp(i,1) = (trapz(Bhip_pwrgen_stp(sfc:mer)) + trapz(abs(Bhip_pwrgen_stp(sfc:mer)))) / (2 * fs);
     Bhip_gen_ap(i,1) = (trapz(Bhip_pwrgen_stp(mer:br)) + trapz(abs(Bhip_pwrgen_stp(mer:br)))) / (2 * fs);
     
-    Bhip_abs_sp(i,1) = (trapz(Bhip_pwrgen_stp(pkh:sfc)) - trapz(abs(Bhip_pwrgen_stp(pkh:sfc)))) / (2 * fs);
+    %Bhip_abs_sp(i,1) = (trapz(Bhip_pwrgen_stp(pkh:sfc)) - trapz(abs(Bhip_pwrgen_stp(pkh:sfc)))) / (2 * fs);
     Bhip_abs_cp(i,1) = (trapz(Bhip_pwrgen_stp(sfc:mer)) - trapz(abs(Bhip_pwrgen_stp(sfc:mer)))) / (2 * fs);
     Bhip_abs_ap(i,1) = (trapz(Bhip_pwrgen_stp(mer:br)) - trapz(abs(Bhip_pwrgen_stp(mer:br)))) / (2 * fs);
     
@@ -546,15 +548,15 @@ for i = 1:numFiles240
     Fhip_trns(i,:) = interp1(time_old, Fhip_trans_net, time, 'spline');
     Fhip_gen(i,:) = interp1(time_old, Fhip_pwrgen_stp, time, 'spline');
     
-    Fhip_trns_sp(i,1) = trapz(Fhip_trans_net(pkh:sfc)) / fs;
+    %Fhip_trns_sp(i,1) = trapz(Fhip_trans_net(pkh:sfc)) / fs;
     Fhip_trns_cp(i,1) = trapz(Fhip_trans_net(sfc:mer)) / fs;
     Fhip_trns_ap(i,1) = trapz(Fhip_trans_net(mer:br)) / fs;
     
-    Fhip_gen_sp(i,1) = (trapz(Fhip_pwrgen_stp(pkh:sfc)) + trapz(abs(Fhip_pwrgen_stp(pkh:sfc)))) / (2 * fs);
+    %Fhip_gen_sp(i,1) = (trapz(Fhip_pwrgen_stp(pkh:sfc)) + trapz(abs(Fhip_pwrgen_stp(pkh:sfc)))) / (2 * fs);
     Fhip_gen_cp(i,1) = (trapz(Fhip_pwrgen_stp(sfc:mer)) + trapz(abs(Fhip_pwrgen_stp(sfc:mer)))) / (2 * fs);
     Fhip_gen_ap(i,1) = (trapz(Fhip_pwrgen_stp(mer:br)) + trapz(abs(Fhip_pwrgen_stp(mer:br)))) / (2 * fs);
     
-    Fhip_abs_sp(i,1) = (trapz(Fhip_pwrgen_stp(pkh:sfc)) - trapz(abs(Fhip_pwrgen_stp(pkh:sfc)))) / (2 * fs);
+    %Fhip_abs_sp(i,1) = (trapz(Fhip_pwrgen_stp(pkh:sfc)) - trapz(abs(Fhip_pwrgen_stp(pkh:sfc)))) / (2 * fs);
     Fhip_abs_cp(i,1) = (trapz(Fhip_pwrgen_stp(sfc:mer)) - trapz(abs(Fhip_pwrgen_stp(sfc:mer)))) / (2 * fs);
     Fhip_abs_ap(i,1) = (trapz(Fhip_pwrgen_stp(mer:br)) - trapz(abs(Fhip_pwrgen_stp(mer:br)))) / (2 * fs);
     
@@ -605,15 +607,15 @@ for i = 1:numFiles240
     PelvThor_trns(i,:) = interp1(time_old, PelvThor_trans_net, time, 'spline');
     PelvThor_gen(i,:) = interp1(time_old, PelvThor_pwrgen_stp, time, 'spline');
     
-    PelvThor_trns_sp(i,1) = trapz(PelvThor_trans_net(pkh:sfc)) / fs;
+    %PelvThor_trns_sp(i,1) = trapz(PelvThor_trans_net(pkh:sfc)) / fs;
     PelvThor_trns_cp(i,1) = trapz(PelvThor_trans_net(sfc:mer)) / fs;
     PelvThor_trns_ap(i,1) = trapz(PelvThor_trans_net(mer:br)) / fs;
     
-    PelvThor_gen_sp(i,1) = (trapz(PelvThor_pwrgen_stp(pkh:sfc)) + trapz(abs(PelvThor_pwrgen_stp(pkh:sfc)))) / (2 * fs);
+    %PelvThor_gen_sp(i,1) = (trapz(PelvThor_pwrgen_stp(pkh:sfc)) + trapz(abs(PelvThor_pwrgen_stp(pkh:sfc)))) / (2 * fs);
     PelvThor_gen_cp(i,1) = (trapz(PelvThor_pwrgen_stp(sfc:mer)) + trapz(abs(PelvThor_pwrgen_stp(sfc:mer)))) / (2 * fs);
     PelvThor_gen_ap(i,1) = (trapz(PelvThor_pwrgen_stp(mer:br)) + trapz(abs(PelvThor_pwrgen_stp(mer:br)))) / (2 * fs);
     
-    PelvThor_abs_sp(i,1) = (trapz(PelvThor_pwrgen_stp(pkh:sfc)) - trapz(abs(PelvThor_pwrgen_stp(pkh:sfc)))) / (2 * fs);
+    %PelvThor_abs_sp(i,1) = (trapz(PelvThor_pwrgen_stp(pkh:sfc)) - trapz(abs(PelvThor_pwrgen_stp(pkh:sfc)))) / (2 * fs);
     PelvThor_abs_cp(i,1) = (trapz(PelvThor_pwrgen_stp(sfc:mer)) - trapz(abs(PelvThor_pwrgen_stp(sfc:mer)))) / (2 * fs);
     PelvThor_abs_ap(i,1) = (trapz(PelvThor_pwrgen_stp(mer:br)) - trapz(abs(PelvThor_pwrgen_stp(mer:br)))) / (2 * fs);
     
@@ -664,15 +666,15 @@ for i = 1:numFiles240
     
     shldr_trns_cp(i,1) = trapz(Shldr_trans_net(sfc:mer)) / fs;
     shldr_trns_ap(i,1) = trapz(Shldr_trans_net(mer:br)) / fs;
-    shldr_trns_dp(i,1) = trapz(Shldr_trans_net(br:mir+24)) / fs;
+    shldr_trns_dp(i,1) = trapz(Shldr_trans_net(br:mir+round(fs*.1))) / fs;
     
     shldr_gen_cp(i,1) = (trapz(Shldr_pwrgen_stp(sfc:mer)) + trapz(abs(Shldr_pwrgen_stp(sfc:mer)))) / (2 * fs);
     shldr_gen_ap(i,1) = (trapz(Shldr_pwrgen_stp(mer:br)) + trapz(abs(Shldr_pwrgen_stp(mer:br)))) / (2 * fs);
-    shldr_gen_dp(i,1) = (trapz(Shldr_pwrgen_stp(br:mir+24)) + trapz(abs(Shldr_pwrgen_stp(br:mir+24)))) / (2 * fs);
+    shldr_gen_dp(i,1) = (trapz(Shldr_pwrgen_stp(br:round(fs*.1))) + trapz(abs(Shldr_pwrgen_stp(br:round(fs*.1))))) / (2 * fs);
     
     shldr_abs_cp(i,1) = (trapz(Shldr_pwrgen_stp(sfc:mer)) - trapz(abs(Shldr_pwrgen_stp(sfc:mer)))) / (2 * fs);
     shldr_abs_ap(i,1) = (trapz(Shldr_pwrgen_stp(mer:br)) - trapz(abs(Shldr_pwrgen_stp(mer:br)))) / (2 * fs);
-    shldr_abs_dp(i,1) = (trapz(Shldr_pwrgen_stp(br:mir+24)) - trapz(abs(Shldr_pwrgen_stp(br:mir+24)))) / (2 * fs);
+    shldr_abs_dp(i,1) = (trapz(Shldr_pwrgen_stp(br:round(fs*.1))) - trapz(abs(Shldr_pwrgen_stp(br:round(fs*.1))))) / (2 * fs);
     
     pShldr_abs(i,1) = min(Shldr_pwrgen_stp);
     pShldr_gen(i,1) = max(Shldr_pwrgen_stp);
@@ -723,19 +725,39 @@ for i = 1:numFiles240
     
     elb_trns_cp(i,1) = trapz(Elb_trans_net(sfc:mer)) / fs;
     elb_trns_ap(i,1) = trapz(Elb_trans_net(mer:br)) / fs;
-    elb_trns_dp(i,1) = trapz(Elb_trans_net(br:mir+24)) / fs;
+    elb_trns_dp(i,1) = trapz(Elb_trans_net(br:round(fs*.1))) / fs;
     
     elb_gen_cp(i,1) = (trapz(Elb_pwrgen_stp(sfc:mer)) + trapz(abs(Elb_pwrgen_stp(sfc:mer)))) / (2 * fs);
     elb_gen_ap(i,1) = (trapz(Elb_pwrgen_stp(mer:br)) + trapz(abs(Elb_pwrgen_stp(mer:br)))) / (2 * fs);
-    elb_gen_dp(i,1) = (trapz(Elb_pwrgen_stp(br:mir+24)) + trapz(abs(Elb_pwrgen_stp(br:mir+24)))) / (2 * fs);
+    elb_gen_dp(i,1) = (trapz(Elb_pwrgen_stp(br:round(fs*.1))) + trapz(abs(Elb_pwrgen_stp(br:round(fs*.1))))) / (2 * fs);
     
     elb_abs_cp(i,1) = (trapz(Elb_pwrgen_stp(sfc:mer)) - trapz(abs(Elb_pwrgen_stp(sfc:mer)))) / (2 * fs);
     elb_abs_ap(i,1) = (trapz(Elb_pwrgen_stp(mer:br)) - trapz(abs(Elb_pwrgen_stp(mer:br)))) / (2 * fs);
-    elb_abs_dp(i,1) = (trapz(Elb_pwrgen_stp(br:mir+24)) - trapz(abs(Elb_pwrgen_stp(br:mir+24)))) / (2 * fs);
+    elb_abs_dp(i,1) = (trapz(Elb_pwrgen_stp(br:round(fs*.1))) - trapz(abs(Elb_pwrgen_stp(br:round(fs*.1))))) / (2 * fs);
     
     pElb_abs(i,1) = min(Elb_pwrgen_stp);
     pElb_gen(i,1) = max(Elb_pwrgen_stp);
     pElb_trns(i,1) = max(Elb_trans_net);
+end
+
+
+% create average interpolated masters
+pStartRow = 1:3:length(Bhip_abs_ap)+1;
+for i = 1:(length(pStartRow)-1)
+    aveBknee_trns(i,:) = mean(Bknee_trns(pStartRow(i):pStartRow(i+1)-1,:));
+    aveBknee_gen(i,:) = mean(Bknee_gen(pStartRow(i):pStartRow(i+1)-1,:));
+    aveFknee_trns(i,:) = mean(Fknee_trns(pStartRow(i):pStartRow(i+1)-1,:));
+    aveFknee_gen(i,:) = mean(Fknee_gen(pStartRow(i):pStartRow(i+1)-1,:));
+    aveBhip_trns(i,:) = mean(Bhip_trns(pStartRow(i):pStartRow(i+1)-1,:));
+    aveBhip_gen(i,:) = mean(Bhip_gen(pStartRow(i):pStartRow(i+1)-1,:));
+    aveFhip_trns(i,:) = mean(Fhip_trns(pStartRow(i):pStartRow(i+1)-1,:));
+    aveFhip_gen(i,:) = mean(Fhip_gen(pStartRow(i):pStartRow(i+1)-1,:));
+    avePelvThor_trns(i,:) = mean(PelvThor_trns(pStartRow(i):pStartRow(i+1)-1,:));
+    avePelvThor_gen(i,:) = mean(PelvThor_gen(pStartRow(i):pStartRow(i+1)-1,:));
+    aveShldr_trns(i,:) = mean(Shldr_trns(pStartRow(i):pStartRow(i+1)-1,:));
+    aveShldr_gen(i,:) = mean(Shldr_gen(pStartRow(i):pStartRow(i+1)-1,:));
+    aveElb_trns(i,:) = mean(Elb_trns(pStartRow(i):pStartRow(i+1)-1,:));
+    aveElb_gen(i,:) = mean(Elb_gen(pStartRow(i):pStartRow(i+1)-1,:));
 end
 
 %% plot front knee & hip generation/transfer
@@ -747,7 +769,7 @@ fig1 = figure('name', 'Front Leg Energy Generation & Transfer', 'color','w');
         xline(mean(sfc_time));
         xline(mean(mer_time));
         xline(mean(br_time));
-        plot_distribution_prctile(time, Fhip_trns);
+        plot_distribution_prctile(time, aveFhip_trns);
         title("Front Hip Transfer");
         set(gca,'fontname','times new roman');
         xticks([0 .25 .50 .75 1]);
@@ -757,7 +779,7 @@ fig1 = figure('name', 'Front Leg Energy Generation & Transfer', 'color','w');
         xline(mean(sfc_time));
         xline(mean(mer_time));
         xline(mean(br_time));
-        plot_distribution_prctile(time, Fhip_gen);
+        plot_distribution_prctile(time, aveFhip_gen);
         title("Front Hip Generation");
         set(gca,'fontname','times new roman');
         xticks([0 .25 .50 .75 1]);
@@ -767,7 +789,7 @@ fig1 = figure('name', 'Front Leg Energy Generation & Transfer', 'color','w');
         xline(mean(sfc_time));
         xline(mean(mer_time));
         xline(mean(br_time));
-        plot_distribution_prctile(time, Fknee_trns);
+        plot_distribution_prctile(time, aveFknee_trns);
         title("Front Knee Transfer");
         set(gca,'fontname','times new roman');
         xticks([0 .25 .50 .75 1]);
@@ -777,29 +799,29 @@ fig1 = figure('name', 'Front Leg Energy Generation & Transfer', 'color','w');
         xline(mean(sfc_time));
         xline(mean(mer_time));
         xline(mean(br_time));
-        plot_distribution_prctile(time, Fknee_gen);
+        plot_distribution_prctile(time, aveFknee_gen);
         title("Front Knee Generation");
         set(gca,'fontname','times new roman');
         xticks([0 .25 .50 .75 1]);
         xticklabels(["0" "25" "50" "75" "100"]);
-    ax = axes(fig1, 'visible', 'off', 'fontname','times new roman');
-    ax.Title.Visible = 'on';
-    ax.XLabel.Visible = 'on';
-    ax.YLabel.Visible = 'on';
-    labelx = xlabel(ax, 'Time(%)');
-    labely = ylabel(ax, 'Power (W)');
+    ax4 = axes(fig1, 'visible', 'off', 'fontname','times new roman');
+    ax4.Title.Visible = 'on';
+    ax4.XLabel.Visible = 'on';
+    ax4.YLabel.Visible = 'on';
+    labelx = xlabel(ax4, 'Time(%)');
+    labely = ylabel(ax4, 'Power (W)');
     labely.Position(1) = labely.Position(1)*1.1; % move y label a bit further away from y axis
    
 %% plot back knee & hip generation/transfer
 
-figure('name', 'Back Leg Energy Generation & Tansfer', 'color','w');
+fig2 = figure('name', 'Back Leg Energy Generation & Tansfer', 'color','w');
     hold on
     subplot(2, 2, 1)
         yline(0);
         xline(mean(sfc_time));
         xline(mean(mer_time));
         xline(mean(br_time));
-        plot_distribution_prctile(time, Bhip_trns);
+        plot_distribution_prctile(time, aveBhip_trns);
         title("Back Hip Transfer");
         set(gca,'fontname','times new roman');
         xticks([0 .25 .50 .75 1]);
@@ -809,7 +831,7 @@ figure('name', 'Back Leg Energy Generation & Tansfer', 'color','w');
         xline(mean(sfc_time));
         xline(mean(mer_time));
         xline(mean(br_time));
-        plot_distribution_prctile(time, Bhip_gen);
+        plot_distribution_prctile(time, aveBhip_gen);
         title("Back Hip Generation");
         set(gca,'fontname','times new roman');
         xticks([0 .25 .50 .75 1]);
@@ -819,7 +841,7 @@ figure('name', 'Back Leg Energy Generation & Tansfer', 'color','w');
         xline(mean(sfc_time));
         xline(mean(mer_time));
         xline(mean(br_time));
-        plot_distribution_prctile(time, Bknee_trns);
+        plot_distribution_prctile(time, aveBknee_trns,'prctile',25);
         title("Back Knee Transfer");
         set(gca,'fontname','times new roman');
         xticks([0 .25 .50 .75 1]);
@@ -829,7 +851,7 @@ figure('name', 'Back Leg Energy Generation & Tansfer', 'color','w');
         xline(mean(sfc_time));
         xline(mean(mer_time));
         xline(mean(br_time));
-        plot_distribution_prctile(time, Bknee_gen);
+        plot_distribution_prctile(time, aveBknee_gen,'prctile',25);
         title("Back Knee Generation");
         set(gca,'fontname','times new roman');
         xticks([0 .25 .50 .75 1])
@@ -837,14 +859,14 @@ figure('name', 'Back Leg Energy Generation & Tansfer', 'color','w');
     
  %% plot thoracopelvic generation/transfer
 
-figure('name', 'Thoraco-Pelvic Energy Generation & Transfer', 'color','w');
+fig3 = figure('name', 'Thoraco-Pelvic Energy Generation & Transfer', 'color','w');
     hold on
     subplot(2, 1, 1)
         yline(0);
         xline(mean(sfc_time));
         xline(mean(mer_time));
         xline(mean(br_time));
-        plot_distribution_prctile(time, PelvThor_trns);
+        plot_distribution_prctile(time, avePelvThor_trns);
         title("Thorax-from-Pelvis Transfer");
         set(gca,'fontname','times new roman');
         xticks([0 .25 .50 .75 1]);
@@ -854,7 +876,7 @@ figure('name', 'Thoraco-Pelvic Energy Generation & Transfer', 'color','w');
         xline(mean(sfc_time));
         xline(mean(mer_time));
         xline(mean(br_time));
-        plot_distribution_prctile(time, PelvThor_gen);
+        plot_distribution_prctile(time, avePelvThor_gen);
         title("Thorax-from-Pelvis Generation");
         set(gca,'fontname','times new roman');
         xticks([0 .25 .50 .75 1]);
@@ -862,169 +884,210 @@ figure('name', 'Thoraco-Pelvic Energy Generation & Transfer', 'color','w');
         
 %% plot shoulder generation/transfer
 
-figure('name','Shoulder Energy Generation & Transfer', 'color','w');
+fig4 = figure('name','Shoulder Energy Generation & Transfer', 'color','w');
     hold on
     subplot(2, 1, 1)
-    ylabel("Power (W)");
         yline(0);
-%         xline(mean(sfc_time));
-        xline(mean(mer_time),'label','mer','labelhorizontalalignment','right',...
-            'labelorientation','horizontal','fontname','times new roman');
-        xline(mean(br_time),'label','br','labelhorizontalalignment','right',...
-            'labelorientation','horizontal','fontname','times new roman');
-        xline(mean(mir_time),'label','mir','labelhorizontalalignment','right',...
-            'labelorientation','horizontal','fontname','times new roman');
+        xline(mean(mer_time),'linestyle','--','label','MER','labelhorizontalalignment','center',...
+            'labelorientation','horizontal','fontname','times new roman','fontsize',8);
+        xline(mean(br_time),'linestyle','--','label','BR','labelhorizontalalignment','center',...
+            'labelorientation','horizontal','fontname','times new roman','fontsize',8);
+        xline(mean(mir_time),'linestyle','--','label','MIR','labelhorizontalalignment','center',...
+            'labelorientation','horizontal','fontname','times new roman','fontsize',8);
         plot_distribution_prctile(time, Shldr_trns);
-        title("Shoulder Transfer",'fontsize',14);
-        set(gca,'fontname','times new roman');
+        title("Net Shoulder Transfer",'fontsize',14);
+        set(gca,'fontname','times new roman','fontsize',10);
         xticks([0 .25 .50 .75 1]);
         xticklabels(["0" "25" "50" "75" "100"]);
     subplot(2, 1, 2)
         yline(0);
-        xlabel("Time (%)");
-        ylabel("Power (W)");
-%         xline(mean(sfc_time));
-        xline(mean(mer_time),'label','mer','labelhorizontalalignment','right',...
-            'labelorientation','horizontal','fontname','times new roman');
-        xline(mean(br_time),'label','br','labelhorizontalalignment','right',...
-            'labelorientation','horizontal','fontname','times new roman');
-        xline(mean(mir_time),'label','mir','labelhorizontalalignment','right',...
-            'labelorientation','horizontal','fontname','times new roman');
+         xline(mean(mer_time),'linestyle','--','label','MER','labelhorizontalalignment','center',...
+            'labelorientation','horizontal','fontname','times new roman','fontsize',8);
+        xline(mean(br_time),'linestyle','--','label','BR','labelhorizontalalignment','center',...
+            'labelorientation','horizontal','fontname','times new roman','fontsize',8);
+        xline(mean(mir_time),'linestyle','--','label','MIR','labelhorizontalalignment','center',...
+            'labelorientation','horizontal','fontname','times new roman','fontsize',8);
         plot_distribution_prctile(time, Shldr_gen);
         title("Shoulder Generation",'fontsize',14);
-        set(gca,'fontname','times new roman');
+        set(gca,'fontname','times new roman','fontsize',10);
         xticks([0 .25 .50 .75 1]);
         xticklabels(["0" "25" "50" "75" "100"]);
+    ax4 = axes(fig4, 'visible', 'off', 'fontname','times new roman');
+    ax4.Title.Visible = 'on';
+    ax4.XLabel.Visible = 'on';
+    ax4.YLabel.Visible = 'on';
+    labelx = xlabel(ax4, 'Time (%)','fontsize',12);
+    labely = ylabel(ax4, 'Power (W)','fontsize',12);
+    labely.Position(1) = labely.Position(1)*1.4; % move y label a bit further away from y axis
         
 %% plot elbow generation/transfer
 
-figure('name', 'Elbow Energy Generation & Transfer', 'color','w');
+fig5 = figure('name', 'Elbow Energy Generation & Transfer', 'color','w');
     hold on
     subplot(2, 1, 1)
         yline(0);
 %         xline(mean(sfc_time));
-        xline(mean(mer_time),'label','mer','labelhorizontalalignment','left',...
-            'labelorientation','horizontal','fontname','times new roman');
-        xline(mean(br_time),'label','br','labelhorizontalalignment','left',...
-            'labelorientation','horizontal','fontname','times new roman');
-        xline(mean(mir_time),'label','mir','labelhorizontalalignment','left',...
-            'labelorientation','horizontal','fontname','times new roman');
-        plot_distribution_prctile(time, Elb_trns);
-        title("Elbow Transfer");
-        set(gca,'fontname','times new roman');
+        xline(mean(mer_time),'linestyle','--','label','MER','labelhorizontalalignment','center',...
+            'labelorientation','horizontal','fontname','times new roman','fontsize',8);
+        xline(mean(br_time),'linestyle','--','label','BR','labelhorizontalalignment','center',...
+            'labelorientation','horizontal','fontname','times new roman','fontsize',8);
+        xline(mean(mir_time),'linestyle','--','label','MIR','labelhorizontalalignment','center',...
+            'labelorientation','horizontal','fontname','times new roman','fontsize',8);
+        plot_distribution_prctile(time, aveElb_trns);
+        title("Net Elbow Transfer",'fontsize',14);
+        set(gca,'fontname','times new roman','fontsize',10);
         xticks([0 .25 .50 .75 1]);
         xticklabels(["0" "25" "50" "75" "100"]);
     subplot(2, 1, 2)
         yline(0);
 %         xline(mean(sfc_time));
-        xline(mean(mer_time),'label','mer','labelhorizontalalignment','left',...
-            'labelorientation','horizontal','fontname','times new roman','labelverticalalignment','bottom');
-        xline(mean(br_time),'label','br','labelhorizontalalignment','left',...
-            'labelorientation','horizontal','fontname','times new roman','labelverticalalignment','bottom');
-        xline(mean(mir_time),'label','mir','labelhorizontalalignment','left',...
-            'labelorientation','horizontal','fontname','times new roman','labelverticalalignment','bottom');
-        plot_distribution_prctile(time, Elb_gen);
-        title("Elbow Generation");
-        set(gca,'fontname','times new roman');
+        xline(mean(mer_time),'linestyle','--','label','MER','labelhorizontalalignment','center',...
+            'labelorientation','horizontal','fontname','times new roman',...
+            'fontsize',8,'labelverticalalignment','bottom');
+        xline(mean(br_time),'linestyle','--','label','BR','labelhorizontalalignment','center',...
+            'labelorientation','horizontal','fontname','times new roman',...
+            'fontsize',8,'labelverticalalignment','bottom');
+        xline(mean(mir_time),'linestyle','--','label','MIR','labelhorizontalalignment','center',...
+            'labelorientation','horizontal','fontname','times new roman',...
+            'fontsize',8,'labelverticalalignment','bottom');
+        plot_distribution_prctile(time, aveElb_gen);
+        title("Elbow Generation",'fontsize',14);
+        set(gca,'fontname','times new roman','fontsize',10);
         xticks([0 .25 .50 .75 1]);
         xticklabels(["0" "25" "50" "75" "100"]);
+    ax5 = axes(fig5, 'visible', 'off', 'fontname','times new roman');
+    ax5.Title.Visible = 'on';
+    ax5.XLabel.Visible = 'on';
+    ax5.YLabel.Visible = 'on';
+    labelx = xlabel(ax5, 'Time (%)','fontsize',12);
+    labely = ylabel(ax5, 'Power (W)','fontsize',12);
+    labely.Position(1) = labely.Position(1)*1.4; % move y label a bit further away from y axis
         
 %% write gen/abs/trans table
 
-fullbodyGAT_master = table();
-
-pID = (1:numFiles240/3)';
-pID = repelem(pID,3);
-
-trial = [1 2 3]';
-trial = repmat(trial,numFiles240/3,1);
-
-fullbodyGAT_master = addvars(fullbodyGAT_master,...
-    fileNames240,...
-    pID,...
-    trial,...
-    bodyheight,...
-    bodymass,...
-    Bknee_trns_sp,...
-    Bknee_trns_cp,...
-    Bknee_trns_ap,...
-    Bknee_gen_sp,...
-    Bknee_gen_cp,...
-    Bknee_gen_ap,...
-    Bknee_abs_sp,...
-    Bknee_abs_cp,...
-    Bknee_abs_ap,...
-    Fknee_trns_sp,...
-    Fknee_trns_cp,...
-    Fknee_trns_ap,...
-    Fknee_gen_sp,...
-    Fknee_gen_cp,...
-    Fknee_gen_ap,...
-    Fknee_abs_sp,...
-    Fknee_abs_cp,...
-    Fknee_abs_ap,...
-    Bhip_trns_sp,...
-    Bhip_trns_cp,...
-    Bhip_trns_ap,...
-    Bhip_gen_sp,...
-    Bhip_gen_cp,...
-    Bhip_gen_ap,...
-    Bhip_abs_sp,...
-    Bhip_abs_cp,...
-    Bhip_abs_ap,...
-    Fhip_trns_sp,...
-    Fhip_trns_cp,...
-    Fhip_trns_ap,...
-    Fhip_gen_sp,...
-    Fhip_gen_cp,...
-    Fhip_gen_ap,...
-    Fhip_abs_sp,...
-    Fhip_abs_cp,...
-    Fhip_abs_ap,...
-    PelvThor_trns_sp,...
-    PelvThor_trns_cp,...
-    PelvThor_trns_ap,...
-    PelvThor_gen_sp,...
-    PelvThor_gen_cp,...
-    PelvThor_gen_ap,...
-    shldr_trns_cp,...
-    shldr_trns_ap,...
-    shldr_trns_dp,...
-    shldr_gen_cp,...
-    shldr_gen_ap,...
-    shldr_gen_dp,...
-    elb_trns_cp,...
-    elb_trns_ap,...
-    elb_trns_dp,...
-    elb_gen_cp,...
-    elb_gen_ap,...
-    elb_gen_dp,...
-    pBknee_gen,...
-    pBknee_abs,... 
-    pBknee_trns,...
-    pBhip_gen,...
-    pBhip_abs,...
-    pBhip_trns,...
-    pFknee_gen,...
-    pFknee_abs,...
-    pFknee_trns,...
-    pFhip_trns,...
-    pFhip_abs,...
-    pFhip_gen,...
-    pPelvThor_trns,...
-    pPelvThor_abs,...
-    pPelvThor_gen,...
-    pShldr_trns,...
-    pShldr_abs,...
-    pShldr_gen,...
-    pElb_trns,...
-    pElb_abs,...
-    pElb_gen);
-
-fullbodyGAT_master = renamevars(fullbodyGAT_master,...
-    ["fileNames240" "bodyheight" "bodymass"],...
-    ["fname" "height" "mass"]);
-
-writetable(fullbodyGAT_master,'GATmaster.csv');
-
-
+% fullbodyGAT_master = table();
+% participants = fileNames.fileNames;
+% pID = (1:numFiles/3)';
+% pID = repelem(pID,3);
+% 
+% trial = [1 2 3]';
+% trial = repmat(trial,numFiles/3,1);
+% 
+% fullbodyGAT_master = ...
+%     addvars(fullbodyGAT_master,...
+%     participants,...
+%     pID,...
+%     trial,...
+%     measRate,...
+%     bodyheight,...
+%     bodymass,...
+%     measRate,...
+%     Bknee_trns_sp,...
+%     Bknee_trns_cp,...
+%     Bknee_trns_ap,...
+%     Bknee_gen_sp,...
+%     Bknee_gen_cp,...
+%     Bknee_gen_ap,...
+%     Bknee_abs_sp,...
+%     Bknee_abs_cp,...
+%     Bknee_abs_ap,...
+%     Fknee_trns_sp,...
+%     Fknee_trns_cp,...
+%     Fknee_trns_ap,...
+%     Fknee_gen_sp,...
+%     Fknee_gen_cp,...
+%     Fknee_gen_ap,...
+%     Fknee_abs_sp,...
+%     Fknee_abs_cp,...
+%     Fknee_abs_ap,...
+%     Bhip_trns_sp,...
+%     Bhip_trns_cp,...
+%     Bhip_trns_ap,...
+%     Bhip_gen_sp,...
+%     Bhip_gen_cp,...
+%     Bhip_gen_ap,...
+%     Bhip_abs_sp,...
+%     Bhip_abs_cp,...
+%     Bhip_abs_ap,...
+%     Fhip_trns_sp,...
+%     Fhip_trns_cp,...
+%     Fhip_trns_ap,...
+%     Fhip_gen_sp,...
+%     Fhip_gen_cp,...
+%     Fhip_gen_ap,...
+%     Fhip_abs_sp,...
+%     Fhip_abs_cp,...
+%     Fhip_abs_ap,...
+%     PelvThor_trns_sp,...
+%     PelvThor_trns_cp,...
+%     PelvThor_trns_ap,...
+%     PelvThor_gen_sp,...
+%     PelvThor_gen_cp,...
+%     PelvThor_gen_ap,...
+%     PelvThor_abs_sp,...
+%     PelvThor_abs_cp,...
+%     PelvThor_abs_ap,...
+%     shldr_trns_cp,...
+%     shldr_trns_ap,...
+%     shldr_trns_dp,...
+%     shldr_gen_cp,...
+%     shldr_gen_ap,...
+%     shldr_gen_dp,...
+%     shldr_abs_cp,...
+%     shldr_abs_ap,...
+%     shldr_abs_dp,...
+%     elb_trns_cp,...
+%     elb_trns_ap,...
+%     elb_trns_dp,...
+%     elb_gen_cp,...
+%     elb_gen_ap,...
+%     elb_gen_dp,...
+%     elb_abs_cp,...
+%     elb_abs_ap,...
+%     elb_abs_dp,...
+%     pBknee_gen,...
+%     pBknee_abs,... 
+%     pBknee_trns,...
+%     pBhip_gen,...
+%     pBhip_abs,...
+%     pBhip_trns,...
+%     pFknee_gen,...
+%     pFknee_abs,...
+%     pFknee_trns,...
+%     pFhip_trns,...
+%     pFhip_abs,...
+%     pFhip_gen,...
+%     pPelvThor_trns,...
+%     pPelvThor_abs,...
+%     pPelvThor_gen,...
+%     pShldr_trns,...
+%     pShldr_abs,...
+%     pShldr_gen,...
+%     pElb_trns,...
+%     pElb_abs,...
+%     pElb_gen);
+% 
+% fullbodyGAT_master = renamevars(fullbodyGAT_master,...
+%     ["participants" "bodyheight" "bodymass"],...
+%     ["fname" "height" "mass"]);
+% 
+% writetable(fullbodyGAT_master,'GAT_master9-7.csv');
+% 
+% 
+% %% write average table
+% pStartRow = 1:3:height(fullbodyGAT_master)+1;
+% aveGAT_master = array2table(nan((numFiles/3),width(fullbodyGAT_master)));
+% 
+% for i = 1:(length(pStartRow)-1)
+%     aveGAT_master{i,2:end} = mean(fullbodyGAT_master{pStartRow(i):pStartRow(i+1)-1,2:end});
+% end
+% 
+% % give average table same variable names and file names as full master
+% aveGAT_master.Properties.VariableNames = fullbodyGAT_master.Properties.VariableNames;
+% 
+% fStartRow = 1:3:length(fileNames.fileNames);
+% aveGAT_master.fname = fileNames.fileNames(fStartRow);
+% 
+% writetable(aveGAT_master,'aveGAT_master9-7.csv');
+% 
+% fclose('all');
