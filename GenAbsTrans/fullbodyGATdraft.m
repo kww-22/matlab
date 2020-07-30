@@ -670,11 +670,11 @@ for i = 1:numFiles
     
     shldr_gen_cp(i,1) = (trapz(Shldr_pwrgen_stp(sfc:mer)) + trapz(abs(Shldr_pwrgen_stp(sfc:mer)))) / (2 * fs);
     shldr_gen_ap(i,1) = (trapz(Shldr_pwrgen_stp(mer:br)) + trapz(abs(Shldr_pwrgen_stp(mer:br)))) / (2 * fs);
-    shldr_gen_dp(i,1) = (trapz(Shldr_pwrgen_stp(br:round(fs*.1))) + trapz(abs(Shldr_pwrgen_stp(br:round(fs*.1))))) / (2 * fs);
+    shldr_gen_dp(i,1) = (trapz(Shldr_pwrgen_stp(br:mir+round(fs*.1))) + trapz(abs(Shldr_pwrgen_stp(br:mir+round(fs*.1))))) / (2 * fs);
     
     shldr_abs_cp(i,1) = (trapz(Shldr_pwrgen_stp(sfc:mer)) - trapz(abs(Shldr_pwrgen_stp(sfc:mer)))) / (2 * fs);
     shldr_abs_ap(i,1) = (trapz(Shldr_pwrgen_stp(mer:br)) - trapz(abs(Shldr_pwrgen_stp(mer:br)))) / (2 * fs);
-    shldr_abs_dp(i,1) = (trapz(Shldr_pwrgen_stp(br:round(fs*.1))) - trapz(abs(Shldr_pwrgen_stp(br:round(fs*.1))))) / (2 * fs);
+    shldr_abs_dp(i,1) = (trapz(Shldr_pwrgen_stp(br:mir+round(fs*.1))) - trapz(abs(Shldr_pwrgen_stp(br:mir+round(fs*.1))))) / (2 * fs);
     
     pShldr_abs(i,1) = min(Shldr_pwrgen_stp);
     pShldr_gen(i,1) = max(Shldr_pwrgen_stp);
@@ -725,15 +725,15 @@ for i = 1:numFiles
     
     elb_trns_cp(i,1) = trapz(Elb_trans_net(sfc:mer)) / fs;
     elb_trns_ap(i,1) = trapz(Elb_trans_net(mer:br)) / fs;
-    elb_trns_dp(i,1) = trapz(Elb_trans_net(br:round(fs*.1))) / fs;
+    elb_trns_dp(i,1) = trapz(Elb_trans_net(br:mir+round(fs*.1))) / fs;
     
     elb_gen_cp(i,1) = (trapz(Elb_pwrgen_stp(sfc:mer)) + trapz(abs(Elb_pwrgen_stp(sfc:mer)))) / (2 * fs);
     elb_gen_ap(i,1) = (trapz(Elb_pwrgen_stp(mer:br)) + trapz(abs(Elb_pwrgen_stp(mer:br)))) / (2 * fs);
-    elb_gen_dp(i,1) = (trapz(Elb_pwrgen_stp(br:round(fs*.1))) + trapz(abs(Elb_pwrgen_stp(br:round(fs*.1))))) / (2 * fs);
+    elb_gen_dp(i,1) = (trapz(Elb_pwrgen_stp(br:mir+round(fs*.1))) + trapz(abs(Elb_pwrgen_stp(br:mir+round(fs*.1))))) / (2 * fs);
     
     elb_abs_cp(i,1) = (trapz(Elb_pwrgen_stp(sfc:mer)) - trapz(abs(Elb_pwrgen_stp(sfc:mer)))) / (2 * fs);
     elb_abs_ap(i,1) = (trapz(Elb_pwrgen_stp(mer:br)) - trapz(abs(Elb_pwrgen_stp(mer:br)))) / (2 * fs);
-    elb_abs_dp(i,1) = (trapz(Elb_pwrgen_stp(br:round(fs*.1))) - trapz(abs(Elb_pwrgen_stp(br:round(fs*.1))))) / (2 * fs);
+    elb_abs_dp(i,1) = (trapz(Elb_pwrgen_stp(br:mir+round(fs*.1))) - trapz(abs(Elb_pwrgen_stp(br:mir+round(fs*.1))))) / (2 * fs);
     
     pElb_abs(i,1) = min(Elb_pwrgen_stp);
     pElb_gen(i,1) = max(Elb_pwrgen_stp);
