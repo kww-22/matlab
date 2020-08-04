@@ -375,6 +375,7 @@ opts = detectImportOptions(fileNames.fileNames{1},'FileType','text');
 varNames = opts.VariableNames;
 clear opts
 
+% create character list for variable selection dialog box
 list = string(varNames);
 
 % Dialog box to select which variables user would like plotted
