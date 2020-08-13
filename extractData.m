@@ -1,20 +1,22 @@
 function [data] = extractData(file,fileType,varRow)
-% extractData: Extracts data from MotionMonitor .exp file and saves it to 
+% extractData: Extracts data from MotionMonitor file and saves it to 
 % the workspace
 % *************************************************************************
 % Inputs:
-%   file: file name encased in "*"
-%   filetype = 'text' for .exp or .txt files
+%   file: file path encased in "*"
+%   filetype = 'text' for .exp (Classic) or .txt (xGen) files
 %   VarRow = row containing variable names
+%       VarRow = 9 for TMM Classic
+%       VarRow = 10 for TMM xGen
 %
 % Outputs:
-%   data: table of imported MotionMonitor file
+%   data: table of imported MotionMonitor variables
 %
 % Author: Kyle Wasserberger
 % Sports Medicine and Movement Lab
 % School of Kinesiology; Auburn University
 % Auburn, AL, USA
-% Last Updated: 2020-06-14
+% Last Updated: 2020-08-13
 % *************************************************************************
 %% Get and set file characteristics
 opts = detectImportOptions(file,'FileType',fileType);
