@@ -151,7 +151,7 @@ measRate = nan(numFiles,1);
     elb_abs_ap = nan(numFiles,1);
     elb_abs_dp = nan(numFiles,1);
 
-% joint gen/abs/trans interpolation masters for plotting
+% joint gen/abs/trans interpolation masters for plot_distribution_prctileting
 Bknee_gen = nan(numFiles,100);
 Bknee_trns = nan(numFiles,100);
 
@@ -202,7 +202,7 @@ pElb_trns = nan(numFiles,1);
 pElb_abs = nan(numFiles,1);
 pElb_gen = nan(numFiles,1);
 
-% segment power interpolated masters for plotting
+% segment power interpolated masters for plot_distribution_prctileting
 % back shank (proximal = ankle; distal = knee)
 % Bshk_spP_master = nan(numFiles,100);
 % Bshk_spD_master =  nan(numFiles,100);
@@ -762,46 +762,46 @@ for i = 1:(length(pStartRow)-1)
     aveElb_gen(i,:) = mean(Elb_gen(pStartRow(i):pStartRow(i+1)-1,:));
 end
 
-%% plot front knee & hip generation/transfer
+%% plot_distribution_prctile front knee & hip generation/transfer
 close all
 
 % fig1 = figure('name', 'Front Leg Energy Generation & Transfer', 'color','w');
-%     subplot(2, 2, 1)
+%     subplot_distribution_prctile(2, 2, 1)
 %         yline(0);
 %         xline(mean(sfc_time));
 %         xline(mean(mer_time));
 %         xline(mean(br_time));
-%         plot(time, aveFhip_trns);
+%         plot_distribution_prctile(time, aveFhip_trns);
 %         title("Front Hip Transfer");
 %         set(gca,'fontname','times new roman');
 %         xticks([0 .25 .50 .75 1]);
 %         xticklabels(["0" "25" "50" "75" "100"]);
-%     subplot(2,2,2)
+%     subplot_distribution_prctile(2,2,2)
 %         yline(0);
 %         xline(mean(sfc_time));
 %         xline(mean(mer_time));
 %         xline(mean(br_time));
-%         plot(time, aveFhip_gen);
+%         plot_distribution_prctile(time, aveFhip_gen);
 %         title("Front Hip Generation");
 %         set(gca,'fontname','times new roman');
 %         xticks([0 .25 .50 .75 1]);
 %         xticklabels(["0" "25" "50" "75" "100"]);
-%     subplot(2, 2, 3)
+%     subplot_distribution_prctile(2, 2, 3)
 %         yline(0);
 %         xline(mean(sfc_time));
 %         xline(mean(mer_time));
 %         xline(mean(br_time));
-%         plot(time, aveFknee_trns);
+%         plot_distribution_prctile(time, aveFknee_trns);
 %         title("Front Knee Transfer");
 %         set(gca,'fontname','times new roman');
 %         xticks([0 .25 .50 .75 1]);
 %         xticklabels(["0" "25" "50" "75" "100"]);
-%     subplot(2, 2, 4)
+%     subplot_distribution_prctile(2, 2, 4)
 %         yline(0);
 %         xline(mean(sfc_time));
 %         xline(mean(mer_time));
 %         xline(mean(br_time));
-%         plot(time, aveFknee_gen);
+%         plot_distribution_prctile(time, aveFknee_gen);
 %         title("Front Knee Generation");
 %         set(gca,'fontname','times new roman');
 %         xticks([0 .25 .50 .75 1]);
@@ -814,71 +814,71 @@ close all
 %     labely = ylabel(ax4, 'Power (W)');
 %     labely.Position(1) = labely.Position(1)*1.1; % move y label a bit further away from y axis
    
-%% plot back knee & hip generation/transfer
+%% plot_distribution_prctile back knee & hip generation/transfer
 
 % fig2 = figure('name', 'Back Leg Energy Generation & Tansfer', 'color','w');
 %     hold on
-%     subplot(2, 2, 1)
+%     subplot_distribution_prctile(2, 2, 1)
 %         yline(0);
 %         xline(mean(sfc_time));
 %         xline(mean(mer_time));
 %         xline(mean(br_time));
-%         plot(time, aveBhip_trns);
+%         plot_distribution_prctile(time, aveBhip_trns);
 %         title("Back Hip Transfer");
 %         set(gca,'fontname','times new roman');
 %         xticks([0 .25 .50 .75 1]);
 %         xticklabels(["0" "25" "50" "75" "100"]);
-%     subplot(2, 2, 2)
+%     subplot_distribution_prctile(2, 2, 2)
 %         yline(0);
 %         xline(mean(sfc_time));
 %         xline(mean(mer_time));
 %         xline(mean(br_time));
-%         plot(time, aveBhip_gen);
+%         plot_distribution_prctile(time, aveBhip_gen);
 %         title("Back Hip Generation");
 %         set(gca,'fontname','times new roman');
 %         xticks([0 .25 .50 .75 1]);
 %         xticklabels(["0" "25" "50" "75" "100"]);
-%     subplot(2, 2, 3)
+%     subplot_distribution_prctile(2, 2, 3)
 %         yline(0);
 %         xline(mean(sfc_time));
 %         xline(mean(mer_time));
 %         xline(mean(br_time));
-%         plot(time, aveBknee_trns,'prctile',25);
+%         plot_distribution_prctile(time, aveBknee_trns,'prctile',25);
 %         title("Back Knee Transfer");
 %         set(gca,'fontname','times new roman');
 %         xticks([0 .25 .50 .75 1]);
 %         xticklabels(["0" "25" "50" "75" "100"]);
-%     subplot(2, 2, 4)
+%     subplot_distribution_prctile(2, 2, 4)
 %         yline(0);
 %         xline(mean(sfc_time));
 %         xline(mean(mer_time));
 %         xline(mean(br_time));
-%         plot(time, aveBknee_gen,'prctile',25);
+%         plot_distribution_prctile(time, aveBknee_gen,'prctile',25);
 %         title("Back Knee Generation");
 %         set(gca,'fontname','times new roman');
 %         xticks([0 .25 .50 .75 1])
 %         xticklabels(["0" "25" "50" "75" "100"]); 
     
- %% plot thoracopelvic generation/transfer
+ %% plot_distribution_prctile thoracopelvic generation/transfer
 
 % fig3 = figure('name', 'Thoraco-Pelvic Energy Generation & Transfer', 'color','w');
 %     hold on
-%     subplot(2, 1, 1)
+%     subplot_distribution_prctile(2, 1, 1)
 %         yline(0);
 %         xline(mean(sfc_time));
 %         xline(mean(mer_time));
 %         xline(mean(br_time));
-%         plot(time, avePelvThor_trns);
+%         plot_distribution_prctile(time, avePelvThor_trns);
 %         title("Thorax-from-Pelvis Transfer");
 %         set(gca,'fontname','times new roman');
 %         xticks([0 .25 .50 .75 1]);
 %         xticklabels(["0" "25" "50" "75" "100"]);
-%     subplot(2, 1, 2)
+%     subplot_distribution_prctile(2, 1, 2)
 %         yline(0);
 %         xline(mean(sfc_time));
 %         xline(mean(mer_time));
 %         xline(mean(br_time));
-%         plot(time, avePelvThor_gen);
+%         plot_distribution_prctile(time, avePelvThor_gen);
 %         title("Thorax-from-Pelvis Generation");
 %         set(gca,'fontname','times new roman');
 %         xticks([0 .25 .50 .75 1]);
@@ -886,10 +886,20 @@ close all
         
 %% plot shoulder generation/transfer
 
+merMean = mean(mer_time);
+merStd = std(mer_time);
+brMean = mean(br_time);
+brStd = std(br_time);
+
+merlims = [merMean-merStd merMean+merStd merMean+merStd merMean-merStd];
+brlims = [brMean-brStd brMean+brStd brMean+brStd brMean-brStd];
+ylims = [min(ylim) min(ylim) max(ylim) max(ylim)];
+
 fig4 = figure('name','Shoulder Energy Generation & Transfer', 'color','w');
     hold on
     subplot(2, 1, 1)
-        plot(time, aveShldr_trns);
+        plot_distribution_prctile(time, aveShldr_trns);
+        box('on')
         yline(0);
         xline(mean(mer_time),'linestyle','--','label','MER','labelhorizontalalignment','center',...
             'labelorientation','horizontal','fontname','times new roman','fontsize',8);
@@ -907,7 +917,8 @@ fig4 = figure('name','Shoulder Energy Generation & Transfer', 'color','w');
         annotation('textarrow',[.85 .85], [.66 .60],'string','proximal transfer',...
         'headwidth',7,'fontname','times new roman','fontsize',8)
     subplot(2, 1, 2)
-        plot(time, aveShldr_gen);
+        plot_distribution_prctile(time, aveShldr_gen);
+        box('on');
         yline(0);
          xline(mean(mer_time),'linestyle','--','label','MER','labelhorizontalalignment','center',...
             'labelorientation','horizontal','fontname','times new roman','fontsize',8);
@@ -937,6 +948,7 @@ fig4 = figure('name','Shoulder Energy Generation & Transfer', 'color','w');
 fig5 = figure('name', 'Elbow Energy Generation & Transfer', 'color','w');
     hold on
     subplot(2, 1, 1)
+        box('on');
         yline(0);
 %         xline(mean(sfc_time));
         xline(mean(mer_time),'linestyle','--','label','MER','labelhorizontalalignment','center',...
@@ -945,7 +957,7 @@ fig5 = figure('name', 'Elbow Energy Generation & Transfer', 'color','w');
             'labelorientation','horizontal','fontname','times new roman','fontsize',8);
         xline(mean(mir_time),'linestyle','--','label','MIR','labelhorizontalalignment','center',...
             'labelorientation','horizontal','fontname','times new roman','fontsize',8);
-        plot(time, Elb_trns);
+        plot_distribution_prctile(time, Elb_trns);
         ylim([-3500 3500]);
         title("Elbow Transfer",'fontsize',14);
         set(gca,'fontname','times new roman','fontsize',10);
@@ -956,6 +968,7 @@ fig5 = figure('name', 'Elbow Energy Generation & Transfer', 'color','w');
         annotation('textarrow',[.85 .85], [.66 .60],'string','proximal transfer',...
         'headwidth',7,'fontname','times new roman','fontsize',8)
     subplot(2, 1, 2)
+        box('on');
         yline(0);
 %         xline(mean(sfc_time));
         xline(mean(mer_time),'linestyle','--','label','MER','labelhorizontalalignment','center',...
@@ -967,7 +980,7 @@ fig5 = figure('name', 'Elbow Energy Generation & Transfer', 'color','w');
         xline(mean(mir_time),'linestyle','--','label','MIR','labelhorizontalalignment','center',...
             'labelorientation','horizontal','fontname','times new roman',...
             'fontsize',8);
-        plot(time, Elb_gen);
+        plot_distribution_prctile(time, Elb_gen);
         ylim([-3500 3500]);
         title("Elbow Generation",'fontsize',14);
         set(gca,'fontname','times new roman','fontsize',10);
