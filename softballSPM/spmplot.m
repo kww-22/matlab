@@ -1,19 +1,12 @@
-%% spm analysis:
-spm       = spm1d.stats.ttest2(YA, YB);
+%% spm analysis
+% add spm folder to path
+spm       = spm1d.stats.ttest2(aveprct_mstr_c, aveprct_mstr_y);
 spmi      = spm.inference(0.05, 'two_tailed',true, 'interp',true);
 % disp(spmi)
 
-
-
-%(2) Plot:
-% close all
-% spmi.plot();
-% spmi.plot_threshold_label();
-% spmi.plot_p_values();
-
 %% custom spm plot
-plot_distribution(time,avethor_flex_mstr_c)
-plot_distribution(time,avethor_flex_mstr_y)
+plot_distribution(time,aveprct_mstr_c)
+plot_distribution(time,aveprct_mstr_y)
 ax = gca;
 color1 = ax.ColorOrder(1,:);
 color2 = ax.ColorOrder(2,:);
@@ -24,10 +17,10 @@ close all
 fig1 = figure('color','w');
     subplot(2,1,1)
         box('on')
-        sgtitle(["\fontsize{16}Trunk Flexion",...
+        sgtitle(["\fontsize{16}% Back to Front",...
             '\fontsize{10}\color[rgb]{0 0.447 0.741}college \color{black}| \color[rgb]{0.929 0.694 0.125}youth']...
             ,'fontweight','normal','fontname','times new roman');
-        ylabel(['Joint Angle (' char(176) ')'])
+        ylabel('COM % Back To Front')
         xline(mean(clock3_time_y),'linestyle','--','color',color1)
         xline(mean(clock12_time_y),'linestyle','--','color',color1)
         xline(mean(fc_time_y),'linestyle','--','color',color1)
@@ -41,8 +34,8 @@ fig1 = figure('color','w');
         % patch(clock12xlims_y,ylims,'k','facealpha',.1,'edgecolor','none')
         % patch(fcxlims_y,ylims,'k','facealpha',.1,'edgecolor','none')
         % patch(brxlims_y,ylims,'k','facealpha',.1,'edgecolor','none')
-        plot_distribution(time,avethor_flex_mstr_c);
-        plot_distribution(time,avethor_flex_mstr_y);
+        plot_distribution(time,aveprct_mstr_c);
+        plot_distribution(time,aveprct_mstr_y);
         text((clock3mean_c+clock3mean_y)/2,max(ylim),'3:00','fontname',...
             'times new roman','fontsize',8,'horizontalalignment','center',...
             'verticalalignment','bottom')
@@ -55,15 +48,18 @@ fig1 = figure('color','w');
         text((brmean_c+brmean_y)/2,max(ylim),'BR','fontname','times new roman',...
             'fontsize',8,'horizontalalignment','center','verticalalignment',...
             'bottom')
-        set(gca,'fontname','times new roman','fontsize',12);
-        xticks([0 .25 .50 .75 1]);
-        xticklabels(["" "25" "50" "75" ""]);
+        ax = gca;
+        ax.FontName = 'times new roman';
+        ax.FontSize = 12;
+        ax.XTick = [0 .25 .50 .75 1];
+        ax.XTickLabel = ["" "25" "50" "75" ""];
     subplot(2,1,2)
         spmi.plot();
         spmi.plot_threshold_label();
         spmi.plot_p_values();
-        set(gca,'fontname','times new roman','fontsize',12);
         box('on');
-        xlabel('Time (%)')
-        xticks([0 25 50 75 100]);
-        xticklabels(["" "25" "50" "75" ""]);
+        ax = gca;
+        ax.FontName = 'times new roman';
+        ax.FontSize = 12;
+        ax.XTick = [0 25 50 75 100];
+        ax.XTickLabel = ["" "25" "50" "75" ""];

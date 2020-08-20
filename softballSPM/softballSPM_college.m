@@ -1,7 +1,7 @@
 %% Gather directory information
 
-clear
-clc
+% clear
+% clc
 
 % set directory
 % choose folder path containing exported and necessary matlab files
@@ -36,16 +36,20 @@ websave('extractData.m',...
 
 %%
 knee_flex_mstr_c = [];
+elb_flex_mstr_c = [];
 
 thor_rot_mstr_c = [];
 thor_flex_mstr_c = [];
 thor_lflex_mstr_c = [];
+thor_rot_velo_mstr_c = [];
 
 pelv_rot_mstr_c = [];
 pelv_antpst_mstr_c = [];
 pelv_ltilt_mstr_c = [];
+pelv_rot_velo_mstr_c = [];
 
 com_velo_mstr_c = [];
+prctRL_mstr_c = [];
 
 clock3_time_c = [];
 clock12_time_c = [];
@@ -64,7 +68,7 @@ for i = 1:numFiles
     events = find(data.VEM_0 == 1);
     
     % round to .1 seconds before first and after fourth event
-    data = data(events(1)-round(fs*.1):events(4)+round(fs*.1),:);
+    data = data(events(1):events(4)+round(fs*.1),:);
     % redefine event indicies
     events = find(data.VEM_0 == 1);
     
@@ -89,18 +93,25 @@ for i = 1:numFiles
         data.pelv_rot = data.pelv_rot*-1;
         data.pelv_lattilt = data.pelv_lattilt*-1;
         data.LkneeFlex = data.RkneeFlex;
+        data.prctRL = data.prctLR;
+        data.RelbFlex = data.LelbFlex;
     end
     %% interpolate variables    
         knee_flex_mstr_c = [knee_flex_mstr_c; interp1(time_old,data.LkneeFlex,time,'spline')];
+        elb_flex_mstr_c = [elb_flex_mstr_c; interp1(time_old,data.RelbFlex,time,'spline')];
+        
         thor_rot_mstr_c = [thor_rot_mstr_c; interp1(time_old,data.thor_rot,time,'spline')];
         thor_flex_mstr_c = [thor_flex_mstr_c; interp1(time_old,data.thor_flex,time,'spline')];
         thor_lflex_mstr_c = [thor_lflex_mstr_c; interp1(time_old,data.thor_latflex,time,'spline')];
+        thor_rot_velo_mstr_c = [thor_rot_velo_mstr_c; interp1(time_old,data.thor_rot_velo,time,'spline')];
         
         pelv_rot_mstr_c = [pelv_rot_mstr_c; interp1(time_old,data.pelv_rot,time,'spline')];
         pelv_antpst_mstr_c = [pelv_antpst_mstr_c; interp1(time_old,data.pelv_antpost,time,'spline')];
         pelv_ltilt_mstr_c = [pelv_ltilt_mstr_c; interp1(time_old,data.pelv_lattilt,time,'spline')];
+        pelv_rot_velo_mstr_c = [pelv_rot_velo_mstr_c; interp1(time_old,data.pelv_rot_velo,time,'spline')];
         
         com_velo_mstr_c = [com_velo_mstr_c; interp1(time_old,data.COMvelo,time,'spline')];
+        prctRL_mstr_c = [prctRL_mstr_c; interp1(time_old,data.prctRL,time,'spline')];
 end
 fclose('all');
 %% compute average (+/-sd) timing of events for plots
@@ -127,11 +138,15 @@ pStartRow = 1:3:length(thor_lflex_mstr_c)+1;
 
 for i = 1:(length(pStartRow)-1)
     aveknee_flex_mstr_c(i,:) = mean(knee_flex_mstr_c(pStartRow(i):pStartRow(i+1)-1,:));
+    aveelb_flex_mstr_c(i,:) = mean(elb_flex_mstr_c(pStartRow(i):pStartRow(i+1)-1,:));
     avecom_velo_mstr_c(i,:) = mean(com_velo_mstr_c(pStartRow(i):pStartRow(i+1)-1,:));
+    aveprct_mstr_c(i,:) = mean(prctRL_mstr_c(pStartRow(i):pStartRow(i+1)-1,:));
     avethor_rot_mstr_c(i,:) = mean(thor_rot_mstr_c(pStartRow(i):pStartRow(i+1)-1,:));
+    avethor_rot_velo_mstr_c(i,:) = mean(thor_rot_velo_mstr_c(pStartRow(i):pStartRow(i+1)-1,:));
     avethor_flex_mstr_c(i,:) = mean(thor_flex_mstr_c(pStartRow(i):pStartRow(i+1)-1,:));
     avethor_lflex_mstr_c(i,:) = mean(thor_lflex_mstr_c(pStartRow(i):pStartRow(i+1)-1,:));
     avepelv_rot_mstr_c(i,:) = mean(pelv_rot_mstr_c(pStartRow(i):pStartRow(i+1)-1,:));
+    avepelv_rot_velo_mstr_c(i,:) = mean(pelv_rot_velo_mstr_c(pStartRow(i):pStartRow(i+1)-1,:));
     avepelv_antpst_mstr_c(i,:) = mean(pelv_antpst_mstr_c(pStartRow(i):pStartRow(i+1)-1,:));
     avepelv_ltilt_mstr_c(i,:) = mean(pelv_ltilt_mstr_c(pStartRow(i):pStartRow(i+1)-1,:));  
 end
