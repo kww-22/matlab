@@ -53,6 +53,8 @@ sfc_time = nan(numFiles,1);
 mer_time = nan(numFiles,1);
 br_time = nan(numFiles,1);
 mir_time = nan(numFiles,1);
+pShldr_trns_time = nan(numFiles,1);
+pElb_trns_time = nan(numFiles,1);
 
 bodyheight = nan(numFiles,1);
 bodymass = nan(numFiles,1);
@@ -678,7 +680,8 @@ for i = 1:numFiles
     
     pShldr_abs(i,1) = min(Shldr_pwrgen_stp);
     pShldr_gen(i,1) = max(Shldr_pwrgen_stp);
-    pShldr_trns(i,1) = max(Shldr_trans_net);
+    [pShldr_trns(i,1), pShldr_trns_time(i,1)] = max(Shldr_trans_net);
+    pShldr_trns_time(i,1) = pShldr_trns_time(i,1)/length(Shldr_trans_net);
     %% Calculate energy transfer, generation, & absorption at Elbow
     % (distal humerus; proximal forearm)
     
@@ -739,7 +742,8 @@ for i = 1:numFiles
     
     pElb_abs(i,1) = min(Elb_pwrgen_stp);
     pElb_gen(i,1) = max(Elb_pwrgen_stp);
-    pElb_trns(i,1) = max(Elb_trans_net);
+    [pElb_trns(i,1), pElb_trns_time(i,1)] = max(Elb_trans_net);
+    pElb_trns_time(i,1) = pElb_trns_time(i,1)/length(Elb_trans_net);
 end
 
 %% create average interpolated masters

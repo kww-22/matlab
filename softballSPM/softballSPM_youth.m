@@ -68,12 +68,12 @@ for i = 1:numFiles
     events = find(data.VEM_0 == 1);
     
     % round to .1 seconds before first and after fourth event
-    data = data(events(1):events(4)+round(fs*.1),:);
+    data = data(events(1):events(4),:);
     % redefine event indicies
     events = find(data.VEM_0 == 1);
     
     %% get timing of events as % of trimmed data
-    clock3_time_y = [clock3_time_y; events(1)/height(data)];
+    %clock3_time_y = [clock3_time_y; events(1)/height(data)];
     clock12_time_y = [clock12_time_y; events(2)/height(data)];
     fc_time_y = [fc_time_y; events(3)/height(data)];
     br_time_y = [br_time_y; events(4)/height(data)];

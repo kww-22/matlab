@@ -1,7 +1,7 @@
 %% Gather directory information
 
-% clear
-% clc
+clear
+clc
 
 % set directory
 % choose folder path containing exported and necessary matlab files
@@ -67,13 +67,13 @@ for i = 1:numFiles
     data = extractData(fileNames.fileNames{i},'text',9);
     events = find(data.VEM_0 == 1);
     
-    % round to .1 seconds before first and after fourth event
-    data = data(events(1):events(4)+round(fs*.1),:);
+    % round to first and fourth event
+    data = data(events(1):events(4),:);
     % redefine event indicies
     events = find(data.VEM_0 == 1);
     
     %% get timing of events as % of trimmed data
-    clock3_time_c = [clock3_time_c; events(1)/height(data)];
+    %clock3_time_c = [clock3_time_c; events(1)/height(data)];
     clock12_time_c = [clock12_time_c; events(2)/height(data)];
     fc_time_c = [fc_time_c; events(3)/height(data)];
     br_time_c = [br_time_c; events(4)/height(data)];
