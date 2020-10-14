@@ -281,8 +281,15 @@ end
 %% Event Abbreviations?
 
 if valEvent == 1
-
-    if numEvents == 3
+    if numEvents == 2
+        prompt = {'Event 1 abbreviation'...
+            'Event 2 abbreviation'};
+        dlgtitle = 'Event Abbreviations';
+        dims = [1 45];
+        defEvents = {'e1','e2'};
+        eventParams = inputdlg(prompt,dlgtitle,dims,defEvents);
+        
+    elseif numEvents == 3
         prompt = {'Event 1 abbreviation'...
             'Event 2 abbreviation'...
             'Event 3 abbreviation'};
@@ -324,16 +331,22 @@ end
 %% Phase abbreviations
 
 if valPhase == 1
-    if numEvents == 3
+    if numEvents == 2
+    prompt = {'Phase 1 abbreviation'};
+        dlgtitle = 'Phase Abbreviations';
+        dims = [1 45];
+        defEvents = {'p1'};
+        phaseParams = inputdlg(prompt,dlgtitle,dims,defEvents);
+    
+    elseif numEvents == 3
     prompt = {'Phase 1 abbreviation',...
             'Phase 2 abbreviation'};
         dlgtitle = 'Phase Abbreviations';
         dims = [1 45];
         defEvents = {'p1','p2'};
         phaseParams = inputdlg(prompt,dlgtitle,dims,defEvents);
-    end
     
-    if numEvents == 4
+    elseif numEvents == 4
         prompt = {'Phase 1 abbreviation',...
             'Phase 2 abbreviation',...
             'Phase 3 abbreviation'};
@@ -341,9 +354,8 @@ if valPhase == 1
         dims = [1 45];
         defEvents = {'p1','p2','p3'};
         phaseParams = inputdlg(prompt,dlgtitle,dims,defEvents);
-    end
     
-    if numEvents == 5
+    elseif numEvents == 5
             prompt = {'Phase 1 abbreviation'...
             'Phase 2 abbreviation'...
             'Phase 3 abbreviation',...
