@@ -191,11 +191,11 @@ end
 %% Sort tables
 
 if phaseSort == 1
-    phaseMaster = sortrows(phaseMaster,"phase");
-    avePhaseMaster = sortrows(avePhaseMaster,"phase");
+    phaseMaster = sortrows(phaseMaster,'phase');
+    avePhaseMaster = sortrows(avePhaseMaster,'phase');
 else
-    phaseMaster = sortrows(phaseMaster,"participant");
-    avePhaseMaster = sortrows(avePhaseMaster,"participant");
+    phaseMaster = sortrows(phaseMaster,'participant');
+    avePhaseMaster = sortrows(avePhaseMaster,'participant');
 end
 
 %% Summary statistics?
