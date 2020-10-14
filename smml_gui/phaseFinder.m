@@ -105,7 +105,7 @@ elseif numEvents == 5
     ave_phase_3_master = array2table(nan(height(phase_1_master)/numTrials,width(phase_1_master)));
     ave_phase_4_master = array2table(nan(height(phase_1_master)/numTrials,width(phase_1_master)));
 end
-%% Create average values across n trials (2-4 phases)
+%% Create average values across n trials (1-4 phases)
 
 % Create vector that goes from 1 to numFiles every n
 pStartRow = 1:numTrials:numFiles;
@@ -180,7 +180,9 @@ avePhaseMaster.Properties.VariableNames = phaseMaster.Properties.VariableNames;
 avePhaseMaster.phase = avePhaseNames;
 
 %
-if numEvents == 3
+if numEvents == 2
+    avePhaseMaster.participant = repmat(aveFileNames,1,1);
+elseif numEvents == 3
     avePhaseMaster.participant = repmat(aveFileNames,2,1);
 elseif numEvents == 4
     avePhaseMaster.participant = repmat(aveFileNames,3,1);
