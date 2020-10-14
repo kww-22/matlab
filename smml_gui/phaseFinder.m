@@ -165,7 +165,9 @@ aveFileNames = phaseMaster.participant(pStartRow);
 avePhaseNames = phaseMaster.phase(1:numTrials:height(phaseMaster));
 
 % compile
-if numEvents == 3
+if numEvents == 2
+    avePhaseMaster = ave_phase_1_master;
+elseif numEvents == 3
     avePhaseMaster = [ave_phase_1_master ; ave_phase_2_master];
 elseif numEvents == 4
     avePhaseMaster = [ave_phase_1_master ; ave_phase_2_master ; ave_phase_3_master];
