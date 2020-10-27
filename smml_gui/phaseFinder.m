@@ -80,7 +80,10 @@ phaseMaster = addvars(phaseMaster,repphases,'after',1);
 
 phaseMaster = sortrows(phaseMaster,"repphases");
 
-if numEvents == 3
+if numEvents == 2
+    phase_1_master = phaseMaster(phaseMaster.repphases == phaseParams{1},:);
+    ave_phase_1_master = array2table(nan(height(phase_1_master)/numTrials,width(phase_1_master)));
+elseif numEvents == 3
     phase_1_master = phaseMaster(phaseMaster.repphases == phaseParams{1},:);
     phase_2_master = phaseMaster(phaseMaster.repphases == phaseParams{2},:);
     ave_phase_1_master = array2table(nan(height(phase_1_master)/numTrials,width(phase_1_master)));
@@ -102,13 +105,16 @@ elseif numEvents == 5
     ave_phase_3_master = array2table(nan(height(phase_1_master)/numTrials,width(phase_1_master)));
     ave_phase_4_master = array2table(nan(height(phase_1_master)/numTrials,width(phase_1_master)));
 end
-%% Create average values across n trials (2-4 phases)
+%% Create average values across n trials (1-4 phases)
 
 % Create vector that goes from 1 to numFiles every n
 pStartRow = 1:numTrials:numFiles;
 % Number of participants
 numPeeps = length(pStartRow);
-
+if numEvents == 2
+    for i = 1:numPeeps
+    ave_phase_1_master(i,3:end) = array2table(nanmean(phase_1_master{pStartRow(i):pStartRow(i)+numTrials-1,3:end}));
+    end
 if numEvents == 3
     for i = 1:numPeeps
     ave_phase_1_master(i,3:end) = array2table(nanmean(phase_1_master{pStartRow(i):pStartRow(i)+numTrials-1,3:end}));
@@ -159,7 +165,9 @@ aveFileNames = phaseMaster.participant(pStartRow);
 avePhaseNames = phaseMaster.phase(1:numTrials:height(phaseMaster));
 
 % compile
-if numEvents == 3
+if numEvents == 2
+    avePhaseMaster = ave_phase_1_master;
+elseif numEvents == 3
     avePhaseMaster = [ave_phase_1_master ; ave_phase_2_master];
 elseif numEvents == 4
     avePhaseMaster = [ave_phase_1_master ; ave_phase_2_master ; ave_phase_3_master];
@@ -174,7 +182,9 @@ avePhaseMaster.Properties.VariableNames = phaseMaster.Properties.VariableNames;
 avePhaseMaster.phase = avePhaseNames;
 
 %
-if numEvents == 3
+if numEvents == 2
+    avePhaseMaster.participant = repmat(aveFileNames,1,1);
+elseif numEvents == 3
     avePhaseMaster.participant = repmat(aveFileNames,2,1);
 elseif numEvents == 4
     avePhaseMaster.participant = repmat(aveFileNames,3,1);
@@ -185,11 +195,11 @@ end
 %% Sort tables
 
 if phaseSort == 1
-    phaseMaster = sortrows(phaseMaster,"phase");
-    avePhaseMaster = sortrows(avePhaseMaster,"phase");
+    phaseMaster = sortrows(phaseMaster,'phase');
+    avePhaseMaster = sortrows(avePhaseMaster,'phase');
 else
-    phaseMaster = sortrows(phaseMaster,"participant");
-    avePhaseMaster = sortrows(avePhaseMaster,"participant");
+    phaseMaster = sortrows(phaseMaster,'participant');
+    avePhaseMaster = sortrows(avePhaseMaster,'participant');
 end
 
 %% Summary statistics?

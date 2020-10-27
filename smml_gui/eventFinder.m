@@ -83,34 +83,58 @@ numPeeps = length(pStartRow);
 
 % Initialize average master table and give it appropriate column names
 aveEventMaster = array2table(nan(height(eventMaster)/numTrials,width(eventMaster)));
+
+if numEvents == 2
+    % Smaller master sheets with only certain events
+    e1Master = eventMaster(eventMaster.repevents == events(1),:);
+    e2Master = eventMaster(eventMaster.repevents == events(2),:);
+
+    % event 1
+    for i = 1:numPeeps
+        aveEventMaster{i,3:end} = mean(e1Master{pStartRow(i):pStartRow(i)+numTrials-1,3:end},1);
+    end
+
+    % event 2
+    for i = 1:numPeeps
+        aveEventMaster{numPeeps+i,3:end} = mean(e2Master{pStartRow(i):pStartRow(i)+numTrials-1,3:end},1);
+    end
+    % Append file names and event abbreviations to beginning of table
+
+    efiles = repmat(files(1:numTrials:length(files)),[numEvents 1]);
+    repevents = repelem(events,numPeeps);
+    aveEventMaster = addvars(aveEventMaster,efiles,repevents,'after',2);
+    aveEventMaster = removevars(aveEventMaster,[1 2]);
+    aveEventMaster.Properties.VariableNames = eventMaster.Properties.VariableNames;
+end
+
 if numEvents == 3
-% Smaller master sheets with only certain events
-e1Master = eventMaster(eventMaster.repevents == events(1),:);
-e2Master = eventMaster(eventMaster.repevents == events(2),:);
-e3Master = eventMaster(eventMaster.repevents == events(3),:);
+    % Smaller master sheets with only certain events
+    e1Master = eventMaster(eventMaster.repevents == events(1),:);
+    e2Master = eventMaster(eventMaster.repevents == events(2),:);
+    e3Master = eventMaster(eventMaster.repevents == events(3),:);
 
-% event 1
-for i = 1:numPeeps
-    aveEventMaster{i,3:end} = mean(e1Master{pStartRow(i):pStartRow(i)+numTrials-1,3:end},1);
-end
+    % event 1
+    for i = 1:numPeeps
+        aveEventMaster{i,3:end} = mean(e1Master{pStartRow(i):pStartRow(i)+numTrials-1,3:end},1);
+    end
 
-% event 2
-for i = 1:numPeeps
-    aveEventMaster{numPeeps+i,3:end} = mean(e2Master{pStartRow(i):pStartRow(i)+numTrials-1,3:end},1);
-end
+    % event 2
+    for i = 1:numPeeps
+        aveEventMaster{numPeeps+i,3:end} = mean(e2Master{pStartRow(i):pStartRow(i)+numTrials-1,3:end},1);
+    end
 
-% event 3
-for i = 1:numPeeps
-    aveEventMaster{2*numPeeps+i,3:end} = mean(e3Master{pStartRow(i):pStartRow(i)+numTrials-1,3:end},1);
-end
+    % event 3
+    for i = 1:numPeeps
+        aveEventMaster{2*numPeeps+i,3:end} = mean(e3Master{pStartRow(i):pStartRow(i)+numTrials-1,3:end},1);
+    end
 
-% Append file names and event abbreviations to beginning of table
+    % Append file names and event abbreviations to beginning of table
 
-efiles = repmat(files(1:numTrials:length(files)),[numEvents 1]);
-repevents = repelem(events,numPeeps);
-aveEventMaster = addvars(aveEventMaster,efiles,repevents,'after',2);
-aveEventMaster = removevars(aveEventMaster,[1 2]);
-aveEventMaster.Properties.VariableNames = eventMaster.Properties.VariableNames;
+    efiles = repmat(files(1:numTrials:length(files)),[numEvents 1]);
+    repevents = repelem(events,numPeeps);
+    aveEventMaster = addvars(aveEventMaster,efiles,repevents,'after',2);
+    aveEventMaster = removevars(aveEventMaster,[1 2]);
+    aveEventMaster.Properties.VariableNames = eventMaster.Properties.VariableNames;
 end
 
 if numEvents == 4
