@@ -55,6 +55,7 @@ clock3_time_c = [];
 clock12_time_c = [];
 fc_time_c = [];
 br_time_c = [];
+tot_time_c = [];
 
 for i = 1:numFiles
     
@@ -77,6 +78,7 @@ for i = 1:numFiles
     clock12_time_c = [clock12_time_c; events(2)/height(data)];
     fc_time_c = [fc_time_c; events(3)/height(data)];
     br_time_c = [br_time_c; events(4)/height(data)];
+    tot_time_c = [tot_time_c; height(data)/fs];
     
     %% time normalizing
     % create original time axis
