@@ -50,7 +50,7 @@ path = uigetdir('Navigate to the folder containing MotionMonitor Exports');
 cd(path);
 
 % Isolate files with .exp extension
-fileDir = dir('*.exp');
+fileDir = dir('*.txt');
 
 % Isolate file names from directory structure
 fileNames = {fileDir.name}.';
